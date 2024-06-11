@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+html,
+body,
+:root {
+  height: 100%;
+}
+.tooltip:before {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 100%;
+  opacity: 0;
+  right: 30%;
+  text-align: center;
+  transition: opacity 0.15s ease;
+  padding: 5px 10px;
+  color: black;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  z-index: 20;
+  background: rgb(228, 224, 224);
+  white-space: nowrap;
+}
+.tooltip:hover::before {
+  opacity: 1;
+}
+.tool:before {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 100%;
+  opacity: 0;
+  /* right: 30%; */
+  text-align: center;
+  transition: opacity 0.15s ease;
+  padding: 5px 10px;
+  color: black;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  z-index: 20;
+  background: rgb(228, 224, 224);
+  white-space: nowrap;
+}
+.tool:hover::before {
+  opacity: 1;
+}
