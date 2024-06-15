@@ -106,9 +106,9 @@ const Delete: React.FC<DeleteProps> = ({ item, id }) => {
       });
 
       if (res.ok) {
+        window.location.href = `/${itemType}`;
         setLoading(false);
         setOpen(false); // Close the modal
-        // window.location.href = `/${itemType}`;
         toast.success(`${item} deleted`);
       } else {
         throw new Error("Failed to delete item");

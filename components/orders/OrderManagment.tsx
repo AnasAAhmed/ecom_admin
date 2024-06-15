@@ -12,7 +12,6 @@ type OrderManageProps = {
 };
 
 const OrderManagement = ({ orderId, currentStatus }: OrderManageProps) => {
-  const [loadingDel, setLoadingDel] = useState(false);
   const [loadingUp, setLoadingUp] = useState(false);
   const [newStatus, setNewStatus] = useState(currentStatus);
 

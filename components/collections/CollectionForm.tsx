@@ -26,7 +26,7 @@ import { LoaderIcon } from "lucide-react";
 const formSchema = z.object({
   title: z.string().min(3).max(20),
   description: z.string().min(3).max(500).trim(),
-  image: z.string(),
+  image: z.string().min(1).max(1),
 });
 
 interface CollectionFormProps {
@@ -104,7 +104,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
                 <FormControl>
                   <Input placeholder="Title" {...field} onKeyDown={handleKeyPress} />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-1"/>
               </FormItem>
             )}
           />
@@ -117,7 +117,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
                 <FormControl>
                   <Textarea placeholder="Description" {...field} rows={5} onKeyDown={handleKeyPress} />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-1"/>
               </FormItem>
             )}
           />
@@ -134,7 +134,7 @@ const CollectionForm: React.FC<CollectionFormProps> = ({ initialData }) => {
                     onRemove={() => field.onChange("")}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-red-1"/>
               </FormItem>
             )}
           />

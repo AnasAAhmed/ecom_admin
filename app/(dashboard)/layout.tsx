@@ -31,17 +31,20 @@ export default function RootLayout({
     <ClerkProvider><html lang="en">
       <body className={inter.className}>
         <ToasterProvider />
-        {sessionClaims?.metadata.role !== "admin" ? <div className="h-screen flex flex-col justify-center items-center gap-5">
-          <p className="text-heading4-bold text-red-1">Your not an Admin you Dont have access yet</p>
-          <UserButton /> Sign-out
+        {/* {sessionClaims?.metadata.role !== "admin" ?
+          <div className="h-screen flex flex-col justify-center items-center gap-5">
+            <p className="text-heading4-bold text-red-1">Your not an Admin you Dont have access yet</p>
+            <UserButton /> Sign-out
 
-        </div> :
+          </div>
+          : */}
           <div className="flex max-lg:flex-col text-grey-1">
             <LeftSideBar />
             <TopBar />
             <div className="flex-1">{children}</div>
           </div>
-        }</body>
+        {/* } */}
+      </body>
     </html>
     </ClerkProvider>
   );

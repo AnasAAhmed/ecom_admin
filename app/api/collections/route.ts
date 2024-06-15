@@ -14,14 +14,13 @@ export const POST = async (req: NextRequest) => {
 
     await connectToDB()
 
-    const { title, description,image } = await req.json()
+    const { title, description ,image} = await req.json()
     const existingCollection = await Collection.findOne({ title })
-
     if (existingCollection) {
       return new NextResponse("Collection already exists", { status: 400 })
     }
 
-    if (!title || !image) {
+    if (!title||!image ) {
       return new NextResponse("Title and image are required", { status: 400 })
     }
 
