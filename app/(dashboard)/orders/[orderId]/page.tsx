@@ -14,7 +14,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     <div className="flex flex-col p-10 gap-5">
       <Link href={'/orders'} className="text-md text-blue-600">&larr; Back</Link>
       <p className="text-base-bold">
-        <CopyText text={orderDetails._id}/>
+        {/* <CopyText text={orderDetails._id}/> */}
       </p>
       <p className="text-base-bold">
         Customer name: <span className="text-base-medium">{customer.name}</span>
