@@ -1,3 +1,4 @@
+import CopyText from "@/components/custom ui/CopyText"
 import { DataTable } from "@/components/custom ui/DataTable"
 import { columns } from "@/components/orderItems/OrderItemsColums"
 import OrderManagement from "@/components/orders/OrderManagment"
@@ -13,7 +14,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
     <div className="flex flex-col p-10 gap-5">
       <Link href={'/orders'} className="text-md text-blue-600">&larr; Back</Link>
       <p className="text-base-bold">
-        Order ID: <span className="text-base-medium">{orderDetails._id.toString()}</span>
+        <CopyText text={orderDetails._id}/>
       </p>
       <p className="text-base-bold">
         Customer name: <span className="text-base-medium">{customer.name}</span>
