@@ -2,10 +2,11 @@
 
 import React, { useState, ChangeEvent } from 'react';
 import toast from 'react-hot-toast';
-import Loader from '../custom ui/Loader';
 import { Button } from '../ui/button';
 import { LoaderIcon, Trash2 } from 'lucide-react';
 import Delete from '../custom ui/Delete';
+import { DropSearch } from '../custom ui/DataTable';
+import CopyText from '../custom ui/CopyText';
 type OrderManageProps = {
   orderId: string;
   currentStatus: string;
@@ -15,9 +16,6 @@ const OrderManagement = ({ orderId, currentStatus }: OrderManageProps) => {
   const [loadingUp, setLoadingUp] = useState(false);
   const [newStatus, setNewStatus] = useState(currentStatus);
 
-  const handleStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setNewStatus(e.target.value);
-  };
 
   const handleSubmit = async () => {
     if (!newStatus) return;
@@ -37,12 +35,13 @@ const OrderManagement = ({ orderId, currentStatus }: OrderManageProps) => {
         window.location.href = `/orders`;
         toast.success('Order status updated successfully');
       } else {
-        throw new Error(`Error updating order: ${res.statusText}`);
+        toast.error(`Internal server error ${res.statusText}`);
+        setLoadingUp(false);
       }
     } catch (err) {
       setLoadingUp(false);
       console.error(err);
-      toast.error('Internal server error');
+      toast.error(`Internal server error ${err}`);
     }
   };
 
@@ -50,21 +49,10 @@ const OrderManagement = ({ orderId, currentStatus }: OrderManageProps) => {
 
   return (
     <div className="flex flex-wrap gap-3 items-center py-5">
-      <select
-        value={newStatus}
-        onChange={handleStatusChange}
-        className="p-2 border border-gray-300 rounded flex items-center space-x-1  focus:outline-none focus:ring focus:border-blue-400 cursor-pointer"
-      >
-        <option>{currentStatus}</option>
-        {statusOptions.map((status) => (
-          <option key={status} value={status}>
-            {status}
-          </option>
-        ))}
-      </select>
+      <DropSearch currentValue={newStatus} setSearchValue={setNewStatus} values={statusOptions} />
       <Delete item={"order"} id={orderId} />
       <Button className="bg-blue-1 hover:opacity-55 text-white" onClick={handleSubmit}>
-        {loadingUp ? <LoaderIcon className='mx-2 animate-spin' /> : "Save"}
+        {loadingUp ? <LoaderIcon className='mx-[7px] animate-spin' /> : "Save"}
       </Button>
     </div>
   );

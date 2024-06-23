@@ -35,16 +35,11 @@ export const PUT = async (req: NextRequest, { params }: { params: { orderId: Str
       status: 404,
     });
 
-
     const { status } = await req.json();
 
-    if (!order.status) {
+    if (order.status) {
       order.status = status;
-    } else {
-      order.status = status; // Update the status if it already exists
-    }
-
-    order.status = status;
+    } 
     await order.save();
 
     return NextResponse.json("Order Status Updated Successfully", { status: 200 })
