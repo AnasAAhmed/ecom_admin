@@ -23,25 +23,27 @@ export const POST = async (req: NextRequest) => {
       category,
       collections,
       tags,
-      sizes,
-      colors,
+      variants,
       stock,
       price,
       expense,
     } = await req.json();
 
+    
     if (
       !title ||
       !description ||
       !media ||
       !category ||
       !price ||
-      !expense || !stock
-    ) {
+      !expense || 
+      !stock ) {
       return new NextResponse("Not enough data to create a product", {
         status: 400,
       });
     }
+
+
     const newProduct = new Product({
       title,
       description,
@@ -49,17 +51,17 @@ export const POST = async (req: NextRequest) => {
       category,
       collections,
       tags,
-      sizes,
+      variants,
       stock,
-      colors,
       price,
       expense,
     });
 
+    console.log('Saving product:', newProduct);
 
     await newProduct.save();
 
-    if (collections) {
+    if (collections && Array.isArray(collections)) {
       for (const collectionId of collections) {
         const collection = await Collection.findById(collectionId);
         if (collection) {
@@ -75,22 +77,6 @@ export const POST = async (req: NextRequest) => {
     return new NextResponse("Internal Error", { status: 500 });
   }
 };
-// export const GET = async (req: NextRequest) => {
-//   try {
-//     await connectToDB();
-
-//     const products = await Product.find()
-//       .sort({ createdAt: "desc" })
-//       .populate({ path: "collections", model: Collection });
-
-//     return NextResponse.json(products, { status: 200 });
-//   } catch (err) {
-//     console.log("[products_GET]", err);
-//     return new NextResponse("Internal Error", { status: 500 });
-//   }
-// };
-
-
 export const GET = async (req: NextRequest) => {
   try {
     await connectToDB();

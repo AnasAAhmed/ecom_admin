@@ -18,7 +18,7 @@ export const GET = async (req: NextRequest, { params }: { params: { orderId: Str
     }
 
     const customer = await Customer.findOne({ clerkId: orderDetails.customerClerkId });
-    return NextResponse.json({ orderDetails, customer }, { status: 200 })
+    return NextResponse.json({ orderDetails, customerName:customer.name }, { status: 200 })
   } catch (err) {
     console.log("[orderId_GET]", err)
     return new NextResponse("Internal Server Error", { status: 500 })
@@ -27,6 +27,8 @@ export const GET = async (req: NextRequest, { params }: { params: { orderId: Str
 
 export const PUT = async (req: NextRequest, { params }: { params: { orderId: String } }) => {
   try {
+    const { status } = await req.json();
+
     await connectToDB();
 
     const order = await Order.findById(params.orderId);
@@ -35,9 +37,8 @@ export const PUT = async (req: NextRequest, { params }: { params: { orderId: Str
       status: 404,
     });
 
-    const { status } = await req.json();
 
-    if (order.status) {
+    if (status) {
       order.status = status;
     } 
     await order.save();

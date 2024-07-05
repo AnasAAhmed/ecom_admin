@@ -22,7 +22,7 @@ import ImageUpload from "../custom ui/ImageUpload";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Delete from "../custom ui/Delete";
-import MultiText from "../custom ui/MultiText";
+import MultiText, { MultiTextForVariants } from "../custom ui/MultiText";
 import MultiSelect from "../custom ui/MultiSelect";
 import Loader from "../custom ui/Loader";
 import { MultiTextForTag } from "../custom ui/MultiText";
@@ -37,25 +37,13 @@ const formSchema = z.object({
   category: z.string().min(2),
   collections: z.array(z.string()),
   tags: z.array(z.string()),
-  sizes: z.array(
+  variants: z.array(
     z.object({
       size: z.string(),
       quantity: z.coerce.number().min(0),
-    })
-  ),
-  colors: z.array(
-    z.object({
       color: z.string(),
-      quantity: z.coerce.number().min(0),
     })
   ),
-  // styles: z.array(
-  //   z.object({
-  //     style: z.string(),
-  //     quantity: z.coerce.number().min(0),
-  //     price: z.coerce.number().min(0),
-  //   })
-  // ),
   stock: z.coerce.number().min(1),
   price: z.coerce.number().min(1),
   expense: z.coerce.number().min(1),
@@ -99,19 +87,11 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         collections: initialData.collections.map(
           (collection) => collection._id
         ),
-        sizes: initialData.sizes.map((size: any) => ({
-          size: size.size,
-          quantity: size.quantity,
+        variants: initialData.variants.map((variant: any) => ({
+          size: variant.size,
+          quantity: variant.quantity,
+          color: variant.color,
         })),
-        colors: initialData.colors.map((color: any) => ({
-          color: color.color,
-          quantity: color.quantity,
-        })),
-        // styles: initialData.colors.map((style: any) => ({
-        //   style: style.style,
-        //   quantity: style.quantity,
-        //   price: style.price,
-        // })),
       }
       : {
         title: "",
@@ -120,9 +100,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         category: "",
         collections: [],
         tags: [],
-        sizes: [],
-        colors: [],
-        // styles:[],
+        variants: [],
         stock: 0,
         price: 0,
         expense: 0,
@@ -142,13 +120,10 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
       ? {
         ...initialData,
         collections: initialData.collections.map((collection) => collection._id),
-        sizes: initialData.sizes.map((size: any) => ({
-          size: size.size,
-          quantity: size.quantity,
-        })),
-        colors: initialData.colors.map((color: any) => ({
-          color: color.color,
-          quantity: color.quantity,
+        variants: initialData.variants.map((variant: any) => ({
+          size: variant.size,
+          color: variant.color,
+          quantity: variant.quantity,
         })),
       }
       : {
@@ -158,14 +133,16 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
         category: "",
         collections: [],
         tags: [],
-        sizes: [],
-        colors: [],
+        variants: [],
         stock: 0,
         price: 0,
         expense: 0,
       });
   };
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const totalQuantity = values.variants.reduce((total, variant) => total + variant.quantity, 0);
+
+    if (totalQuantity >values.stock) return toast.error("total variants quantity can not be more than Overall stock")
     try {
       setIsSubmtting(true);
       const url = initialData
@@ -396,88 +373,21 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
             )}
             <FormField
               control={form.control}
-              name="sizes"
+              name="variants"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Sizes</FormLabel>
+                  <FormLabel>Variants</FormLabel>
                   <FormControl>
-                    <MultiText
-                      placeholder="Size"
-                      value={field.value.map((item) => ({
-                        label: item.size,
-                        quantity: item.quantity,
-                      }))}
+                    <MultiTextForVariants
+                      value={field.value}
                       onChange={(value) =>
                         field.onChange([
                           ...field.value,
-                          { size: value.label, quantity: value.quantity },
+                          { size: value.size, color: value.color, quantity: value.quantity },
                         ])
                       }
-                      onRemove={(value) =>
-                        field.onChange([
-                          ...field.value.filter((item) => item.size !== value),
-                        ])
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage className="text-red-1" />
-                </FormItem>
-              )}
-            />
-            {/* <FormField
-              control={form.control}
-              name="styles"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Styles</FormLabel>
-                  <FormControl>
-                    <MultiTextForStyle
-                      placeholder="Styles"
-                      value={field.value.map((item) => ({
-                        label: item.style,
-                        quantity: item.quantity,
-                        price: item.price,
-                      }))}
-                      onChange={(value) =>
-                        field.onChange([
-                          ...field.value,
-                          { style: value.label, price: value.price,quantity: value.quantity },
-                        ])
-                      }
-                      onRemove={(value) =>
-                        field.onChange([
-                          ...field.value.filter((item) => item.style !== value),
-                        ])
-                      }
-                    />
-                  </FormControl>
-                  <FormMessage className="text-red-1" />
-                </FormItem>
-              )}
-            /> */}
-            <FormField
-              control={form.control}
-              name="colors"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Colors</FormLabel>
-                  <FormControl>
-                    <MultiText
-                      placeholder="Color"
-                      value={field.value.map((item) => ({
-                        label: item.color,
-                        quantity: item.quantity,
-                      }))}
-                      onChange={(value) =>
-                        field.onChange([
-                          ...field.value,
-                          { color: value.label, quantity: value.quantity },
-                        ])
-                      }
-                      onRemove={(value) =>
-                        field.onChange([
-                          ...field.value.filter((item) => item.color !== value),
-                        ])
+                      onRemove={(index) =>
+                        field.onChange(field.value.filter((_, i) => i !== index))
                       }
                     />
                   </FormControl>
@@ -488,8 +398,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
           </div>
 
           <div className="flex gap-10">
-            <Button type="submit" className="bg-blue-1 text-white">
-              {isSubmtting && <LoaderIcon className="animate-spin mx-1" />}{ initialData ? "Save" : "Submit"}
+            <Button type="submit" className="bg-blue-1 text-white" disabled={isSubmtting}>
+              {isSubmtting ? <LoaderIcon className="animate-spin mx-3" />:initialData ? "Save" : "Submit"}
             </Button>
             <Button
               type="button"

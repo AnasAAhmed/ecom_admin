@@ -22,11 +22,11 @@ type ProductType = {
   category: string;
   collections: [CollectionType];
   tags: [string];
-  sizes: [];
-  colors: [];
-  // styles: [];
-  stock:number;
+  variants: [];
+  stock: number;
   price: number;
+  ratings: number;
+  numOfRevies: number;
   expense: number;
   createdAt: Date;
   updatedAt: Date;

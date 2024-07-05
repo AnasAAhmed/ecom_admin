@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
-import { ClerkProvider, UserButton, auth } from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 
 import LeftSideBar from "@/components/layout/LeftSideBar";
 import TopBar from "@/components/layout/TopBar";
@@ -26,7 +26,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { sessionClaims } = auth();
+  // const { sessionClaims } = auth();
   return (
     <ClerkProvider><html lang="en">
       <body className={inter.className}>

@@ -128,88 +128,86 @@ const MultiText: React.FC<MultiTextProps> = ({
   );
 };
 
-// interface MultiTextForSytleProps {
-//   placeholder: string;
-//   value: { label: string; quantity: number;price: number }[];
-//   onChange: (item: { label: string; quantity: number;price: number }) => void;
-//   onRemove: (label: string) => void;
-// }
+interface MultiTextForVariantsProps {
+  value: { size: string; quantity: number; color: string }[];
+  onChange: (item: { size: string; quantity: number; color: string }) => void;
+  onRemove: (index: number) => void;
+}
 
-// export const MultiTextForStyle: React.FC<MultiTextForSytleProps> = ({
-//   placeholder,
-//   value,
-//   onChange,
-//   onRemove,
-// }) => {
-//   const [inputValue, setInputValue] = useState("");
-//   const [quantityValue, setQuantityValue] = useState<number>(0);
-//   const [priceValue, setPriceValue] = useState<number>(0);
+export const MultiTextForVariants: React.FC<MultiTextForVariantsProps> = ({
+  value,
+  onChange,
+  onRemove,
+}) => {
+  const [sizeValue, setSizeValue] = useState("");
+  const [quantityValue, setQuantityValue] = useState<number>(0);
+  const [colorValue, setColorValue] = useState<string>('');
 
-//   const addValue = (item: string, quantity: number,price:number) => {
-//     if (item.trim() && !value.some((v) => v.label === item)) {
-//       onChange({ label: item, quantity,price });
-//     }
-//     setInputValue("");
-//     setQuantityValue(0);
-//     setPriceValue(0);
-//   };
+  const addValue = (size: string, quantity: number, color: string) => {
+    // if (size.trim() && !value.some((v) => v.size === size)) {
+      onChange({ size, quantity, color });
+    // }
+    setSizeValue("");
+    setQuantityValue(0);
+    setColorValue('');
+  };
 
-//   return (
-//     <>
-//       <div className="flex gap-2 relative tooltip" data-tooltip={"Style - Quantity - Price"}>
-//         <Input
-//           placeholder={placeholder}
-//           value={inputValue}
-//           onChange={(e) => setInputValue(e.target.value)}
-//           onKeyDown={(e) => {
-//             if (e.key === "Enter") {
-//               e.preventDefault();
-//               addValue(inputValue, quantityValue,priceValue);
-//             }
-//           }}
-//           />
-//         <Input
-//           placeholder="Quantity"
-//           type="number"
-//           value={quantityValue}
-//           onChange={(e) => setQuantityValue(Number(e.target.value))}
-//           onKeyDown={(e) => {
-//             if (e.key === "Enter") {
-//               e.preventDefault();
-//               addValue(inputValue, quantityValue,priceValue);
-//             }
-//           }}
-//           />
-//           <Input
-//           placeholder="Price"
-//           type="number"
-//           value={priceValue}
-//           onChange={(e) => setPriceValue(Number(e.target.value))}
-//           onKeyDown={(e) => {
-//             if (e.key === "Enter") {
-//               e.preventDefault();
-//               addValue(inputValue, quantityValue,priceValue);
-//             }
-//           }}
-//         />
-//       </div>
+  return (
+    <>
+      <div className="flex gap-2 ">
+        <Input
+          placeholder={"size"}
+          value={sizeValue}
+          onChange={(e) => setSizeValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              addValue(sizeValue, quantityValue, colorValue);
+            }
+          }}
+        />
+        <Input
+          placeholder="color"
+          type="text"
+          value={colorValue}
+          onChange={(e) => setColorValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              addValue(sizeValue, quantityValue, colorValue);
+            }
+          }}
+        />
+        <Input
+          placeholder="Quantity"
+          type="number"
+          value={quantityValue}
+          onChange={(e) => setQuantityValue(Number(e.target.value))}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              addValue(sizeValue, quantityValue, colorValue);
+            }
+          }}
+        />
+      </div>
 
-//       <div className="flex gap-1 flex-wrap mt-4">
-//         {value.map((item, index) => (
-//           <Badge key={index} className="bg-grey-1 text-white">
-//             {item.label} - {item.quantity} - {item.price}
-//             <button
-//               className="ml-1 rounded-full outline-none hover:bg-red-1"
-//               onClick={() => onRemove(item.label)}
-//               type="button"
-//             >
-//               <X className="h-3 w-3" />
-//             </button>
-//           </Badge>
-//         ))}
-//       </div>
-//     </>
-//   );
-// };
+      <div className="flex gap-1 flex-wrap mt-4">
+        {value.map((item, index) => (
+          <Badge key={index} className="bg-grey-1 text-white">
+            {item.size}  - {item.color}- {item.quantity}
+            <button
+              className="ml-1 rounded-full outline-none hover:bg-red-1"
+              onClick={() => onRemove(index)}
+              type="button"
+            >
+              <X className="h-3 w-3" />
+            </button>
+          </Badge>
+        ))}
+      </div>
+    </>
+  );
+};
 
 export default MultiText;

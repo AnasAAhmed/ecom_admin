@@ -10,6 +10,7 @@ const orderSchema = new mongoose.Schema({
       },
       color: String,
       size: String,
+      variantId: String,
       quantity: Number,
     },
   ],

@@ -7,13 +7,10 @@ const ProductSchema = new mongoose.Schema({
   category: String,
   collections: [{ type: mongoose.Schema.Types.ObjectId, ref: "Collection" }],
   tags: [String],
-  sizes: [{
-    size: String,
-    quantity: Number
-  }],
-  colors: [{
-    color: String,
-    quantity: Number
+  variants: [{
+    size: { type: String },
+    color: { type: String },
+    quantity: { type: Number },
   }],
   reviews: [
     {
@@ -68,8 +65,3 @@ const ProductSchema = new mongoose.Schema({
 const Product = mongoose.models.Product || mongoose.model("Product", ProductSchema);
 
 export default Product;
-// styles: [{
-//   style: String,
-//   quantity: Number,
-//   price: Number
-//   }],

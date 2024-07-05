@@ -8,7 +8,6 @@ import { columns } from "@/components/collections/CollectionColumns";
 import { DataTable } from "@/components/custom ui/DataTable";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import Loader from "@/components/custom ui/Loader";
 
 const Collections = () => {
   const router = useRouter();

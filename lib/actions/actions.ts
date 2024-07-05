@@ -11,6 +11,10 @@ export const getTotalSales = async () => {
   return { totalOrders, totalRevenue }
 }
 
+export const getOrderDetails = async (orderId: string) => {
+  const order = await fetch(`${process.env.ADMIN_DASHBOARD_URL}/api/orders/${orderId}`)
+  return await order.json()
+}
 
 export const getTotalCustomers = async () => {
   await connectToDB();
