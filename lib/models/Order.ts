@@ -23,14 +23,12 @@ const orderSchema = new mongoose.Schema({
   },
   shippingRate: String,
   totalAmount: Number,
+  currency: String,
+  status: String,
+  exchangeRate: Number,
   createdAt: {
     type: Date,
     default: Date.now,
-  },
-  status: {
-    type: String,
-    enum: ["Processing", "Shipped", "Delivered","Cancel"],
-    default: "Processing",
   },
 });
 

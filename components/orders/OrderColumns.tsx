@@ -42,6 +42,9 @@ export const columns: ColumnDef<OrderColumnType>[] = [
   {
     accessorKey: "totalAmount",
     header: "Total ($)",
+    cell: ({ row }) => {
+        return <>${row.original.totalAmount} x <span className="relative tooltip"data-tooltip={row.original.exchangeRate}>({row.original.currency})</span></>;
+      },
   },
   {
     accessorKey: "createdAt",

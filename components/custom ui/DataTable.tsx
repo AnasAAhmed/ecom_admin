@@ -22,10 +22,9 @@ import {
 } from "@/components/ui/table";
 import { Input } from "../ui/input";
 // import DropSearch from "./DropSearch";
-import { RefreshCw } from "lucide-react";
+import { ChevronRight, RefreshCw } from "lucide-react";
 import Loader from "./Loader";
 import React, { useState } from 'react'
-import { ChevronDown } from 'lucide-react';
 
 type DropSearchProps = {
   setSearchValue: any;
@@ -157,7 +156,7 @@ export const DropSearch = ({ currentValue, setSearchValue, values }: DropSearchP
     <div className="relative">
       <button onClick={() => setOpen(!open)} className="flex items-center space-x-1 p-2 border border-gray-200 rounded-md focus:outline-none focus:ring focus:border-blue-400">
         <span>{currentValue?currentValue:"Filters"}</span>
-        <ChevronDown className={`transition-all duration-300 h-5 w-5 ${open && "rotate-180"}`} />
+        <ChevronRight className={`transition-all duration-200 h-5 w-5 ${open && "rotate-90"}`} />
       </button>
       {open && (
         <div className="absolute z-30 left-0 mt-2 w-44 origin-top-right bg-white border border-gray-300 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">

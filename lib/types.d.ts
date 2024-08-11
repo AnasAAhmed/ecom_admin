@@ -39,6 +39,8 @@ type OrderColumnType = {
   totalAmount: number;
   createdAt: string;
   status: string;
+  exchangeRate: number;
+  currency: string;
 }
 
 type OrderItemType = {

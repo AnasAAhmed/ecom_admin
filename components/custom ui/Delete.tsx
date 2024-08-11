@@ -124,7 +124,7 @@ const Delete: React.FC<DeleteProps> = ({ item, id }) => {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button className="hover:bg-red-1 hover:text-white border border-gray-300" onClick={() => setOpen(true)}>
+        <Button className="hover:bg-red-1 hover:border-none hover:text-white border border-gray-300" onClick={() => setOpen(true)}>
           {/* <Trash className="h-4 w-4" /> */}
           Delete
         </Button>
@@ -138,7 +138,7 @@ const Delete: React.FC<DeleteProps> = ({ item, id }) => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => setOpen(false)}>Cancel</AlertDialogCancel>
-          <Button className="bg-red-1 text-white" onClick={onDelete}>
+          <Button disabled={loading} className="bg-red-1 disabled:opacity-35 text-white" onClick={onDelete}>
             {loading ? <Loader className="animate-spin mx-[0.8rem]" /> : "Delete"}
           </Button>
         </AlertDialogFooter>
