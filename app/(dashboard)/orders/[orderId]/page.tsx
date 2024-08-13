@@ -92,7 +92,7 @@ const OrderDetails = ({ params }: { params: { orderId: string } }) => {
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
-        const order = await fetch(`http://localhost:3000/api/orders/${params.orderId}`);
+        const order = await fetch(`/api/orders/${params.orderId}`);
         const data = await order.json();
         console.log("good");
 
