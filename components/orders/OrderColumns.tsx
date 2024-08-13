@@ -43,15 +43,11 @@ export const columns: ColumnDef<OrderColumnType>[] = [
     accessorKey: "totalAmount",
     header: "Total ($)",
     cell: ({ row }) => {
-        return <>${row.original.totalAmount} x <span className="relative tooltip"data-tooltip={row.original.exchangeRate}>({row.original.currency})</span></>;
+        return <>${row.original.totalAmount} x <span className="relative tooltip"data-tooltip={(row.original.exchangeRate*row.original.totalAmount).toFixed()}>({row.original.currency})</span></>;
       },
   },
   {
     accessorKey: "createdAt",
     header: "Created At",
-    // cell: ({ row }) => {
-    //   const date = new Date(row.original.createdAt);
-    //   return date.toISOString().split('T')[0];
-    // },
   },
 ];

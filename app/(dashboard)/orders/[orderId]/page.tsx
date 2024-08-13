@@ -1,15 +1,17 @@
-import { DataTable } from "@/components/custom ui/DataTable"
-import { columns } from "@/components/orderItems/OrderItemsColums"
-import OrderManagement from "@/components/orders/OrderManagment"
-import { getOrderDetails } from "@/lib/actions/actions"
-import Link from "next/link"
+import { DataTable } from "@/components/custom ui/DataTable";
+import { columns } from "@/components/orderItems/OrderItemsColums";
+import OrderManagement from "@/components/orders/OrderManagment";
+import { getOrderDetails } from "@/lib/actions/actions";
+import Link from "next/link";
 
 const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
-  const res = await getOrderDetails(params.orderId)
+  const res = await getOrderDetails(params.orderId);
 
   const { orderDetails, customerName } = res;
 
-  const { street, city, state, postalCode, country } = orderDetails.shippingAddress
+  // Mask or redact sensitive data
+  const { street, city, state, postalCode, country } = orderDetails.shippingAddress;
+  const redactedStreet = ('2025 M Street, NW, Washington, DC, 20036. 2. countable noun.').replace(/[^ ]/g, "*"); // Example: Replace all characters except spaces with '*'
 
   return (
     <div className="flex flex-col p-10 gap-5">
@@ -27,7 +29,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
         Customer name: <span className="text-base-medium">{customerName}</span>
       </p>
       <p className="text-base-bold">
-        Shipping address: <span className="text-base-medium">{street}, {city}, {state}, {postalCode}, {country}</span>
+        Shipping address: <span className="text-base-medium">{redactedStreet}, {city}, {state}, {postalCode}, {country}</span>
       </p>
       <p className="text-base-bold">
         Total Paid: <span className="text-base-medium">${orderDetails.totalAmount}</span>
@@ -41,7 +43,7 @@ const OrderDetails = async ({ params }: { params: { orderId: string } }) => {
       <OrderManagement orderId={orderDetails._id} currentStatus={orderDetails.status} />
       <DataTable columns={columns} data={orderDetails.products} searchKeys={["product", 'color', 'size', 'quantity']} />
     </div>
-  )
-}
+  );
+};
 
-export default OrderDetails
+export default OrderDetails;
