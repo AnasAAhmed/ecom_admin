@@ -22,7 +22,7 @@ import ImageUpload from "../custom ui/ImageUpload";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Delete from "../custom ui/Delete";
-import MultiText, { MultiTextForVariants } from "../custom ui/MultiText";
+import { MultiTextForVariants } from "../custom ui/MultiText";
 import MultiSelect from "../custom ui/MultiSelect";
 import Loader from "../custom ui/Loader";
 import { MultiTextForTag } from "../custom ui/MultiText";
