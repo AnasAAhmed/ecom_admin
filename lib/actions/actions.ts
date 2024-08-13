@@ -2,6 +2,8 @@ import Customer from "../models/Customer";
 import Order from "../models/Order";
 import Product from "../models/Product";
 import { connectToDB } from "../mongoDB"
+import { format } from "date-fns";
+
 
 export const getTotalSales = async () => {
   await connectToDB();
@@ -46,4 +48,31 @@ export const getSalesPerMonth = async () => {
   })
 
   return graphData
+}
+
+export const getOrders = async()=>{
+    try {
+      await connectToDB()
+  
+      const orders = await Order.find().sort({ createdAt: "desc" });
+  
+      const orderDetails = await Promise.all(orders.map(async (order) => {
+        const customer = await Customer.findOne({ clerkId: order.customerClerkId })
+        return {
+          _id: order._id,
+          customer: customer.name,
+          products: order.products.length,
+          status: order.status,
+          totalAmount: order.totalAmount,
+          currency: order.currency,
+          exchangeRate: order.exchangeRate,
+          createdAt: format(order.createdAt, "MMM do, yyyy")
+        }
+      }))
+  
+      return JSON.parse(JSON.stringify(orderDetails));
+    } catch (err) {
+      console.log("[orders_GET]", err)
+     throw new Error("Internal Server Error");
+  }
 }

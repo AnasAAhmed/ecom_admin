@@ -26,7 +26,7 @@ import { LoaderIcon } from "lucide-react";
 const formSchema = z.object({
   title: z.string().min(3).max(20),
   description: z.string().min(3).max(500).trim(),
-  image: z.string().min(1).max(1),
+  image: z.string(),
 });
 
 interface CollectionFormProps {

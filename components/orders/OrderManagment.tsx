@@ -51,9 +51,9 @@ const OrderManagement = ({ orderId, currentStatus }: OrderManageProps) => {
     <div className="flex flex-wrap gap-3 items-center py-5">
       <DropSearch currentValue={newStatus} setSearchValue={setNewStatus} values={statusOptions} />
       <Delete item={"order"} id={orderId} />
-      <Button className="bg-blue-1 hover:opacity-55 text-white" onClick={handleSubmit}>
+      {newStatus!==currentStatus&&<Button className="bg-blue-1 hover:opacity-55 text-white" onClick={handleSubmit}>
         {loadingUp ? <LoaderIcon className='mx-[7px] animate-spin' /> : "Save"}
-      </Button>
+      </Button>}
     </div>
   );
 };

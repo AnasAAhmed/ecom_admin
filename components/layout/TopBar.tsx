@@ -40,6 +40,7 @@ const TopBar = () => {
               <Link
                 href={link.url}
                 key={link.label}
+                onClick={() => setDropdownMenu(!dropdownMenu)}
                 className="flex gap-4 text-body-medium"
               >
                 {link.icon} <p>{link.label}</p>
