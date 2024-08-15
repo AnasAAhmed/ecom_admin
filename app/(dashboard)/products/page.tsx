@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { columns } from "@/components/products/ProductColumns";
 import { Input } from "@/components/ui/input";
 import { DataTablePRoducts } from "@/components/custom ui/DataTableProducts";
+import Head from "next/head";
 
 const Products = () => {
   const router = useRouter();
@@ -48,6 +49,16 @@ const Products = () => {
   }
   
   return (
+    <>
+    <Head>
+        <title>Best Products in 2024 - My E-commerce Store</title>
+        <meta name="description" content="Discover the best products in 2024 with great deals and discounts. Shop now at My E-commerce Store!" />
+        <meta property="og:title" content="Best Products in 2024" />
+        <meta property="og:description" content="Shop the best products with exclusive discounts. Don't miss out!" />
+        <meta property="og:url" content="https://www.myecommercestore.com/best-products-2024" />
+        <meta property="og:type" content="website" />
+        <link rel="canonical" href="https://www.myecommercestore.com/best-products-2024" />
+      </Head>
     <div className="px-10 py-5">
       <div className="flex flex-col sm:flex-row items-center justify-between">
         <p className="text-heading2-bold">Products ({totalProducts})</p>
@@ -69,7 +80,7 @@ const Products = () => {
           onChange={(event) => setSearchValue(event.target.value)}
           className="max-w-sm"
           onKeyDown={handleKeyDown}
-        />
+          />
         <Button onClick={() => setSearch(searchValue)}>Search</Button>
         <Input
           name="id"
@@ -77,7 +88,7 @@ const Products = () => {
           value={searchId}
           onChange={(event) => setSearchId(event.target.value)}
           className="max-w-sm"
-        />
+          />
         <Button onClick={() => setRefresh(!refresh)}><RefreshCw /></Button>
       </div>
         <DataTablePRoducts
@@ -89,8 +100,9 @@ const Products = () => {
           pageSize={pageSize}
           totalPages={totalPages}
           loading={loading}
-        />
+          />
     </div>
+          </>
   );
 };
 

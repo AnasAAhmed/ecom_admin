@@ -8,7 +8,6 @@ import {
   getTotalProducts
 } from "@/lib/actions/actions";
 import { CircleDollarSign, LucideEdit, ShoppingBag, UserRound } from "lucide-react";
-import { redirect } from "next/navigation";
 
 
 export default async function Home() {

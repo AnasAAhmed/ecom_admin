@@ -57,8 +57,6 @@ export const POST = async (req: NextRequest) => {
       expense,
     });
 
-    console.log('Saving product:', newProduct);
-
     await newProduct.save();
 
     if (collections && Array.isArray(collections)) {

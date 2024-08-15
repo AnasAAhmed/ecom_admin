@@ -1,3 +1,4 @@
+import Collection from "../models/Collection";
 import Customer from "../models/Customer";
 import Order from "../models/Order";
 import Product from "../models/Product";
@@ -13,10 +14,39 @@ export const getTotalSales = async () => {
   return { totalOrders, totalRevenue }
 }
 
-// export const getOrderDetails = async (orderId: string) => {
-//   const order = await fetch(`${process.env.ADMIN_DASHBOARD_URL}/api/orders/${orderId}`)
-//   return await order.json()
-// }
+export const getProductById = async (productId: String) => {
+  try {
+    await connectToDB();
+
+    const product = await Product.findById(productId).populate({
+      path: "collections",
+      model: Collection,
+    }).select("-reviews");
+    const collections = await Collection.find().sort({ createdAt: "desc" })
+
+    if (!product) {
+      throw new Error("Product not found");
+    }
+    return JSON.parse(JSON.stringify({
+      product,
+      collections
+    }))
+  } catch (err) {
+    console.log("[productId_GET],[collections_GET]", err);
+    throw new Error("Internal error");
+  }
+};
+
+export const getCollections = async () => {
+  try {
+    // await connectToDB()
+    const collections = await Collection.find().sort({ createdAt: "desc" })
+    return JSON.parse(JSON.stringify(collections))
+  } catch (err) {
+    console.log("[collections_GET]", err)
+    throw new Error("Internal Server Error")
+  }
+}
 
 export const getTotalCustomers = async () => {
   await connectToDB();
@@ -50,29 +80,29 @@ export const getSalesPerMonth = async () => {
   return graphData
 }
 
-export const getOrders = async()=>{
-    try {
-      await connectToDB()
-  
-      const orders = await Order.find().sort({ createdAt: "desc" });
-  
-      const orderDetails = await Promise.all(orders.map(async (order) => {
-        const customer = await Customer.findOne({ clerkId: order.customerClerkId })
-        return {
-          _id: order._id,
-          customer: customer.name,
-          products: order.products.length,
-          status: order.status,
-          totalAmount: order.totalAmount,
-          currency: order.currency,
-          exchangeRate: order.exchangeRate,
-          createdAt: format(order.createdAt, "MMM do, yyyy")
-        }
-      }))
-  
-      return JSON.parse(JSON.stringify(orderDetails));
-    } catch (err) {
-      console.log("[orders_GET]", err)
-     throw new Error("Internal Server Error");
+export const getOrders = async () => {
+  try {
+    await connectToDB()
+
+    const orders = await Order.find().sort({ createdAt: "desc" });
+
+    const orderDetails = await Promise.all(orders.map(async (order) => {
+      const customer = await Customer.findOne({ clerkId: order.customerClerkId })
+      return {
+        _id: order._id,
+        customer: customer.name,
+        products: order.products.length,
+        status: order.status,
+        totalAmount: order.totalAmount,
+        currency: order.currency,
+        exchangeRate: order.exchangeRate,
+        createdAt: format(order.createdAt, "MMM do, yyyy")
+      }
+    }))
+
+    return JSON.parse(JSON.stringify(orderDetails));
+  } catch (err) {
+    console.log("[orders_GET]", err)
+    throw new Error("Internal Server Error");
   }
 }

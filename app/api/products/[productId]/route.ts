@@ -5,38 +5,6 @@ import { auth } from "@clerk/nextjs";
 
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (
-  req: NextRequest,
-  { params }: { params: { productId: string } }
-) => {
-  try {
-    await connectToDB();
-
-    const product = await Product.findById(params.productId).populate({
-      path: "collections",
-      model: Collection,
-    }).select("-reviews");
-
-    if (!product) {
-      return new NextResponse(
-        JSON.stringify({ message: "Product not found" }),
-        { status: 404 }
-      );
-    }
-    return new NextResponse(JSON.stringify(product), {
-      status: 200,
-      headers: {
-        "Access-Control-Allow-Origin": `${process.env.ECOMMERCE_STORE_URL}`,
-        "Access-Control-Allow-Methods": "GET",
-        "Access-Control-Allow-Headers": "Content-Type",
-      },
-    });
-  } catch (err) {
-    console.log("[productId_GET]", err);
-    return new NextResponse("Internal error", { status: 500 });
-  }
-};
-
 export const POST = async (
   req: NextRequest,
   { params }: { params: { productId: string } }

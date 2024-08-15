@@ -51,33 +51,14 @@ const formSchema = z.object({
 
 interface ProductFormProps {
   initialData?: ProductType | null;
+  collections: CollectionType[];
 }
 
-const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
+const ProductForm: React.FC<ProductFormProps> = ({ initialData, collections }) => {
   const router = useRouter();
 
-  const [loading, setLoading] = useState(true);
   const [isSubmtting, setIsSubmtting] = useState(false);
   const [routing, setRouting] = useState(true);
-  const [collections, setCollections] = useState<CollectionType[]>([]);
-
-  const getCollections = async () => {
-    try {
-      const res = await fetch(`/api/collections`, {
-        method: "GET",
-      });
-      const data = await res.json();
-      setCollections(data);
-      setLoading(false);
-    } catch (err) {
-      console.log("[collections_GET]", err);
-      toast.error("Something went wrong! Please try again.");
-    }
-  };
-
-  useEffect(() => {
-    getCollections();
-  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -142,7 +123,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const totalQuantity = values.variants.reduce((total, variant) => total + variant.quantity, 0);
 
-    if (totalQuantity >values.stock) return toast.error("total variants quantity can not be more than Overall stock")
+    if (totalQuantity > values.stock) return toast.error("total variants quantity can not be more than Overall stock")
     try {
       setIsSubmtting(true);
       const url = initialData
@@ -165,9 +146,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
     }
   };
 
-  return loading ? (
-    <Loader />
-  ) : (
+  return(
     <div className="p-10">
       <div className="flex flex-col sm:flex-row items-center gap-3 justify-between">
         {initialData ? (
@@ -344,7 +323,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
                 </FormItem>
               )}
             />
-            {collections.length > 0 && loading ? <LoaderIcon className="animate-spin h-12 w-12 mt-7" /> : (
+            {collections.length > 0&&(
               <FormField
                 control={form.control}
                 name="collections"
@@ -399,7 +378,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
 
           <div className="flex gap-10">
             <Button type="submit" className="bg-blue-1 text-white" disabled={isSubmtting}>
-              {isSubmtting ? <LoaderIcon className="animate-spin mx-3" />:initialData ? "Save" : "Submit"}
+              {isSubmtting ? <LoaderIcon className="animate-spin mx-3" /> : initialData ? "Save" : "Submit"}
             </Button>
             <Button
               type="button"
