@@ -40,8 +40,8 @@ export const POST = async (
       expense,
     } = await req.json();
 
-    if (!title || !description || !media || !category || !price || !expense||!stock) {
-      return new NextResponse("Not enough data to create a new product", {
+    if (!title || !description || !media || !category || !price ||!stock) {
+      return new NextResponse("Not enough data to Update a new product", {
         status: 400,
       });
     }

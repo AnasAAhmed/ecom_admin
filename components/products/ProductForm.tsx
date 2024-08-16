@@ -137,11 +137,13 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData, collections }) =
         toast.success(`Product ${initialData ? "updated" : "created"}`);
         { routing && router.push("/products"), handleReset() };
         setIsSubmtting(false);
+      }else{
+        toast.error(res.statusText)
       }
     } catch (err) {
       const typeError = err as Error
       setIsSubmtting(false);
-      toast.error("Something went wrong! Please try again."+typeError.message);
+      toast.error("Something went wrong! Please try again.");
       console.log("[products_POST]", err);
     }
   };
