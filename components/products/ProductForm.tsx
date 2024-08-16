@@ -46,7 +46,7 @@ const formSchema = z.object({
   ),
   stock: z.coerce.number().min(1),
   price: z.coerce.number().min(1),
-  expense: z.coerce.number().min(1),
+  expense: z.coerce.number(),
 });
 
 interface ProductFormProps {
