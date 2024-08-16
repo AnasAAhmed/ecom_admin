@@ -139,10 +139,10 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData, collections }) =
         setIsSubmtting(false);
       }
     } catch (err) {
+      const typeError = err as Error
       setIsSubmtting(false);
-      router.push("/products");
+      toast.error("Something went wrong! Please try again."+typeError.message);
       console.log("[products_POST]", err);
-      toast.error("Something went wrong! Please try again.");
     }
   };
 

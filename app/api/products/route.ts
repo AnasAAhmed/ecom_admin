@@ -36,7 +36,6 @@ export const POST = async (req: NextRequest) => {
       !media ||
       !category ||
       !price ||
-      !expense || 
       !stock ) {
       return new NextResponse("Not enough data to create a product", {
         status: 400,
