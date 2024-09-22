@@ -28,16 +28,6 @@ const ProductSchema = new mongoose.Schema({
   expense: { type: Number },
 }, { toJSON: { getters: true }, timestamps: true });
 
-ProductSchema.pre('save', function (next) {
-  if (this.isModified('title') || this.isNew) {
-    if (this.title) {
-      this.slug = slugify(this.title);
-    }
-  }
-  next();
-});
-
-
 const Product = mongoose.models.Product || mongoose.model("Product", ProductSchema);
 
 export default Product;

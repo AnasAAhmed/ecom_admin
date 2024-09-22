@@ -1,6 +1,7 @@
 import Collection from "@/lib/models/Collection";
 import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
+import { slugify } from "@/lib/utils";
 import { auth } from "@clerk/nextjs";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -72,6 +73,7 @@ export const POST = async (
         title,
         description,
         media,
+        slug: slugify(title),
         category,
         collections,
         tags,

@@ -133,13 +133,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData, collections }) =
         method: "POST",
         body: JSON.stringify(values),
       });
-      if (res.ok) {
-        toast.success(`Product ${initialData ? "updated" : "created"}`);
-        { routing && router.push("/products"), handleReset() };
-        setIsSubmtting(false);
-      } else {
-        toast.error(res.statusText)
-      }
+      toast.success(`Product ${initialData ? "updated" : "created"}`);
+      { routing && router.push("/products"), handleReset() };
+      setIsSubmtting(false);
     } catch (err) {
       const typeError = err as Error
       setIsSubmtting(false);

@@ -5,6 +5,7 @@ import { connectToDB } from "@/lib/mongoDB";
 import Product from "@/lib/models/Product";
 import Collection from "@/lib/models/Collection";
 import { isValidObjectId } from "mongoose";
+import { slugify } from "@/lib/utils";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -29,14 +30,14 @@ export const POST = async (req: NextRequest) => {
       expense,
     } = await req.json();
 
-    
+
     if (
       !title ||
       !description ||
       !media ||
       !category ||
       !price ||
-      !stock ) {
+      !stock) {
       return new NextResponse("Not enough data to create a product", {
         status: 400,
       });
@@ -46,6 +47,7 @@ export const POST = async (req: NextRequest) => {
     const newProduct = new Product({
       title,
       description,
+      slug: slugify(title),
       media,
       category,
       collections,
@@ -88,8 +90,8 @@ export const GET = async (req: NextRequest) => {
 
     if (search) {
       query.$or = [
-        { title: { $regex: search, $options: 'i' } }, 
-        { category: { $regex: search, $options: 'i' } }, 
+        { title: { $regex: search, $options: 'i' } },
+        { category: { $regex: search, $options: 'i' } },
       ];
     }
 
