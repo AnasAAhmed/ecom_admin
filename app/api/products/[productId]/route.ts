@@ -97,9 +97,9 @@ export const DELETE = async (
   { params }: { params: { productId: string } }
 ) => {
   try {
-    const { userId } = auth();
+    const { userId, sessionClaims } = auth();
 
-    if (!userId) {
+    if (!userId && sessionClaims?.metadata.role !== "admin") {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 

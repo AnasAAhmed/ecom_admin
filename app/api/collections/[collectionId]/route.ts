@@ -33,9 +33,9 @@ export const POST = async (
   { params }: { params: { collectionId: string } }
 ) => {
   try {
-    const { userId } = auth();
+    const { userId, sessionClaims } = auth();
 
-    if (!userId) {
+    if (!userId && sessionClaims?.metadata.role !== "admin") {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -73,12 +73,11 @@ export const DELETE = async (
   { params }: { params: { collectionId: string } }
 ) => {
   try {
-    const { userId } = auth();
+    const { userId, sessionClaims } = auth();
 
-    if (!userId) {
+    if (!userId && sessionClaims?.metadata.role !== "admin") {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-
     await connectToDB();
 
     await Collection.findByIdAndDelete(params.collectionId);

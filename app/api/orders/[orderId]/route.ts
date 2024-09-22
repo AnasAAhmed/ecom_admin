@@ -2,6 +2,7 @@ import Customer from "@/lib/models/Customer";
 import Order from "@/lib/models/Order";
 import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
+import { auth } from "@clerk/nextjs";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest, { params }: { params: { orderId: String } }) => {
@@ -28,7 +29,11 @@ export const GET = async (req: NextRequest, { params }: { params: { orderId: Str
 export const PUT = async (req: NextRequest, { params }: { params: { orderId: String } }) => {
   try {
     const { status } = await req.json();
+    const { userId, sessionClaims } = auth();
 
+    if (!userId && sessionClaims?.metadata.role !== "admin") {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
     await connectToDB();
 
     const order = await Order.findById(params.orderId);

@@ -6,12 +6,11 @@ import Collection from "@/lib/models/Collection";
 
 export const POST = async (req: NextRequest) => {
   try {
-    const { userId } = auth()
+    const { userId, sessionClaims } = auth();
 
-    if (!userId) {
-      return new NextResponse("Unauthorized", { status: 403 })
+    if (!userId && sessionClaims?.metadata.role !== "admin") {
+      return new NextResponse("Unauthorized", { status: 401 });
     }
-
     await connectToDB()
 
     const { title, description ,image} = await req.json()
