@@ -88,8 +88,8 @@ export const GET = async (req: NextRequest) => {
 
     if (search) {
       query.$or = [
-        { title: { $regex: search, $options: 'i' } }, // Case-insensitive search on the title field
-        { category: { $regex: search, $options: 'i' } }, // Case-insensitive search on the title field
+        { title: { $regex: search, $options: 'i' } }, 
+        { category: { $regex: search, $options: 'i' } }, 
       ];
     }
 
@@ -103,7 +103,7 @@ export const GET = async (req: NextRequest) => {
       .skip(page * 10)
       .limit(10)
       .populate({ path: 'collections', model: Collection })
-      .select("-reviews -media -ratings -numOfReviews -description -sizes -colors");
+      .select("-reviews -media -ratings -numOfReviews -description -variants");
 
     return NextResponse.json({
       data: products,

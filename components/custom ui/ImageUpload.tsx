@@ -3,6 +3,7 @@ import { Plus, Trash } from "lucide-react";
 
 import { Button } from "../ui/button";
 import Image from "next/image";
+import { Pangolin } from "next/font/google";
 
 interface ImageUploadProps {
   value: string[];

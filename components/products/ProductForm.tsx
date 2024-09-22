@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
 import ImageUpload from "../custom ui/ImageUpload";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import Delete from "../custom ui/Delete";
 import { MultiTextForVariants } from "../custom ui/MultiText";
@@ -31,8 +31,8 @@ import { Label } from "../ui/label";
 
 
 const formSchema = z.object({
-  title: z.string().min(2).max(25),
-  description: z.string().min(2).max(500).trim(),
+  title: z.string().min(2).max(60),
+  description: z.string().min(2).max(400).trim(),
   media: z.array(z.string()).max(4),
   category: z.string().min(2),
   collections: z.array(z.string()),
@@ -137,18 +137,18 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData, collections }) =
         toast.success(`Product ${initialData ? "updated" : "created"}`);
         { routing && router.push("/products"), handleReset() };
         setIsSubmtting(false);
-      }else{
+      } else {
         toast.error(res.statusText)
       }
     } catch (err) {
       const typeError = err as Error
       setIsSubmtting(false);
-      toast.error("Something went wrong! Please try again.");
+      toast.error("Something went wrong! Please try again. " + typeError.message);
       console.log("[products_POST]", err);
     }
   };
 
-  return(
+  return (
     <div className="p-10">
       <div className="flex flex-col sm:flex-row items-center gap-3 justify-between">
         {initialData ? (
@@ -185,6 +185,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData, collections }) =
                     placeholder="Title"
                     {...field}
                     onKeyDown={handleKeyPress}
+                    maxLength={60}
                   />
                 </FormControl>
                 <FormMessage className="text-red-1" />
@@ -202,6 +203,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData, collections }) =
                     placeholder="Description"
                     {...field}
                     rows={5}
+                    maxLength={400}
                     onKeyDown={handleKeyPress}
                   />
                 </FormControl>
@@ -325,7 +327,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialData, collections }) =
                 </FormItem>
               )}
             />
-            {collections.length > 0&&(
+            {collections.length > 0 && (
               <FormField
                 control={form.control}
                 name="collections"

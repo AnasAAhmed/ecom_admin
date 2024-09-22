@@ -1,82 +1,10 @@
-// "use client"
-
-// import { useState } from "react";
-// import { Loader, Trash } from "lucide-react";
-
-// import {
-//   AlertDialog,
-//   AlertDialogAction,
-//   AlertDialogCancel,
-//   AlertDialogContent,
-//   AlertDialogDescription,
-//   AlertDialogFooter,
-//   AlertDialogHeader,
-//   AlertDialogTitle,
-//   AlertDialogTrigger,
-// } from "@/components/ui/alert-dialog";
-// import { Button } from "../ui/button";
-// import toast from "react-hot-toast";
-
-// interface DeleteProps {
-//   item: string;
-//   id: string;
-// }
-
-// const Delete: React.FC<DeleteProps> = ({ item, id }) => {
-//   const [loading, setLoading] = useState(false);
-
-//   const onDelete = async () => {
-//     try {
-//       setLoading(true)
-//       const itemType = item === "product" ? "products" : "collections"
-//       const res = await fetch(`/api/${itemType}/${id}`, {
-//         method: "DELETE",
-//       })
-
-//       if (res.ok) {
-//         setLoading(false)
-//         window.location.href = (`/${itemType}`)
-//         toast.success(`${item} deleted`)
-//       }
-//     } catch (err) {
-//         setLoading(false)
-//         console.log(err)
-//       toast.error("Something went wrong! Please try again.")
-//     }
-//   }
-//   return (
-//     <AlertDialog>
-//       <AlertDialogTrigger>
-//         <Button className="bg-red-1 text-white">
-//           <Trash className="h-4 w-4" />
-//         </Button>
-//       </AlertDialogTrigger>
-//       <AlertDialogContent className="bg-white text-grey-1">
-//         <AlertDialogHeader>
-//           <AlertDialogTitle className="text-red-1">Are you absolutely sure?</AlertDialogTitle>
-//           <AlertDialogDescription>
-//             This action cannot be undone. This will permanently delete your {item}.
-//           </AlertDialogDescription>
-//         </AlertDialogHeader>
-//         <AlertDialogFooter>
-//           <AlertDialogCancel>Cancel</AlertDialogCancel>
-//           <AlertDialogAction className="bg-red-1 text-white" onClick={onDelete}>{loading?<Loader/>:"Delete"}</AlertDialogAction>
-//         </AlertDialogFooter>
-//       </AlertDialogContent>
-//     </AlertDialog>
-//   );
-// };
-
-// export default Delete;
-
 "use client";
 
 import { useState } from "react";
-import { Loader, Trash } from "lucide-react";
+import { Loader } from "lucide-react";
 
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -87,7 +15,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
-import { useRouter } from "next/router";
 
 interface DeleteProps {
   item: string;
@@ -96,12 +23,11 @@ interface DeleteProps {
 
 const Delete: React.FC<DeleteProps> = ({ item, id }) => {
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false); // State to manage modal visibility
-
+  const [open, setOpen] = useState(false); 
   const onDelete = async () => {
     try {
       setLoading(true);
-      const itemType = item === "product" ? "products" :item === "order"?"orders": "collections";
+      const itemType = item === "product" ? "products" : item === "order" ? "orders" : "collections";
       const res = await fetch(`/api/${itemType}/${id}`, {
         method: "DELETE",
       });
@@ -109,16 +35,16 @@ const Delete: React.FC<DeleteProps> = ({ item, id }) => {
       if (res.ok) {
         window.location.href = `/${itemType}`;
         setLoading(false);
-        setOpen(false); // Close the modal
+        setOpen(false); 
         toast.success(`${item} deleted`);
       } else {
-        throw new Error("Failed to delete item");
+        throw new Error(res.statusText);
       }
     } catch (err) {
       setLoading(false);
-      setOpen(false); // Close the modal
+      setOpen(false);
       console.log(err);
-      toast.error("Something went wrong! Please try again.");
+      toast.error("Something went wrong! Please try again. " + (err as Error).message);
     }
   };
 

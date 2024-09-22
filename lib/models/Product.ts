@@ -1,10 +1,12 @@
 import mongoose from "mongoose";
+import { slugify } from "../utils";
 
 const ProductSchema = new mongoose.Schema({
   title: String,
   description: String,
   media: [String],
   category: String,
+  slug: String,
   collections: [{ type: mongoose.Schema.Types.ObjectId, ref: "Collection" }],
   tags: [String],
   variants: [{
@@ -12,40 +14,6 @@ const ProductSchema = new mongoose.Schema({
     color: { type: String },
     quantity: { type: Number },
   }],
-  reviews: [
-    {
-      userId: {
-        type: String,
-        required: true,
-      },
-      email: {
-        type: String,
-        required: true,
-      },
-      photo: {
-        type: String,
-        required: true,
-      },
-      date: {
-        type: Date,
-        default: Date.now,
-        // immutable: true
-      },
-      name: {
-        type: String,
-        required: true,
-      },
-      rating: {
-        type: Number,
-        required: true,
-      },
-      comment: {
-        type: String,
-        required: true,
-      },
-
-    },
-  ],
   numOfReviews: {
     type: Number,
     default: 0,
@@ -55,12 +23,20 @@ const ProductSchema = new mongoose.Schema({
     default: 0,
   },
   stock: { type: Number },
-  sold: { type: Number,default:0 },
-  price: { type: mongoose.Schema.Types.Decimal128, get: (v: mongoose.Schema.Types.Decimal128) => { return parseFloat(v.toString()) } },
-  expense: { type: mongoose.Schema.Types.Decimal128, get: (v: mongoose.Schema.Types.Decimal128) => { return parseFloat(v.toString()) } },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-}, { toJSON: { getters: true } });
+  sold: { type: Number, default: 0 },
+  price: { type: Number },
+  expense: { type: Number },
+}, { toJSON: { getters: true }, timestamps: true });
+
+ProductSchema.pre('save', function (next) {
+  if (this.isModified('title') || this.isNew) {
+    if (this.title) {
+      this.slug = slugify(this.title);
+    }
+  }
+  next();
+});
+
 
 const Product = mongoose.models.Product || mongoose.model("Product", ProductSchema);
 

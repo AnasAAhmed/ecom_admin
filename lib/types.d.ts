@@ -20,6 +20,7 @@ type ProductType = {
   description: string;
   media: [string];
   category: string;
+  slug: string;
   collections: [CollectionType];
   tags: [string];
   variants: [];
