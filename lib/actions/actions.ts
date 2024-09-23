@@ -39,7 +39,7 @@ export const getProductById = async (productId: String) => {
 
 export const getCollections = async () => {
   try {
-    // await connectToDB()
+    await connectToDB()
     const collections = await Collection.find().sort({ createdAt: "desc" })
     return JSON.parse(JSON.stringify(collections))
   } catch (err) {
