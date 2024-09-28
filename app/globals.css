@@ -10,7 +10,7 @@ body,
 .tooltip:before {
   content: attr(data-tooltip);
   position: absolute;
-  top: 100%;
+  bottom: 50%;
   opacity: 0;
   right: 30%;
   text-align: center;

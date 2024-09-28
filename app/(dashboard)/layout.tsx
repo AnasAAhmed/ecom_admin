@@ -34,18 +34,18 @@ export default function RootLayout({
         <body className={inter.className}>
             <ToasterProvider />
             {/* Uncomment and implement the auth check if needed */}
-            {sessionClaims?.metadata.role !== "admin" ? (
+            {/* {sessionClaims?.metadata.role !== "admin" ? (
               <div className="h-screen flex flex-col justify-center items-center gap-5">
                 <p className="text-heading4-bold text-red-1">You are not an Admin. You don not have access yet.</p>
                 <UserButton /> <SignOutButton>Sign-out</SignOutButton>
               </div>
-            ) : (
+            ) : ( */}
               <div className="flex max-lg:flex-col text-grey-1">
                 <LeftSideBar />
                 <TopBar />
                 <div className="flex-1">{children}</div>
               </div>
-            )}
+            {/* )} */}
         </body>
       </html>
     </ClerkProvider>

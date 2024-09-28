@@ -10,7 +10,7 @@ type DropSearchProps = {
 const DropDown = ({ currentValue, setSearchValue, values }: DropSearchProps) => {
     const [open, setOpen] = useState(false);
     return (
-        <div className="relative">
+        <div className="relative" onBlur={() => setOpen(false)}>
             <button onClick={() => setOpen(!open)} className="flex items-center space-x-1 p-2 border border-gray-200 rounded-md focus:outline-none focus:ring focus:border-blue-400">
                 <span>{currentValue ? currentValue : "Filters"}</span>
                 <ChevronRight className={`transition-all duration-200 h-5 w-5 ${open && "rotate-90"}`} />

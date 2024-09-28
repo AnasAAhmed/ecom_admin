@@ -24,7 +24,6 @@ import toast from "react-hot-toast";
 import Delete from "../custom ui/Delete";
 import { MultiTextForVariants } from "../custom ui/MultiText";
 import MultiSelect from "../custom ui/MultiSelect";
-import Loader from "../custom ui/Loader";
 import { MultiTextForTag } from "../custom ui/MultiText";
 import { InfoIcon, LoaderIcon } from "lucide-react";
 import { Label } from "../ui/label";

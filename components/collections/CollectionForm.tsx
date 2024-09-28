@@ -24,8 +24,8 @@ import Delete from "../custom ui/Delete";
 import { LoaderIcon } from "lucide-react";
 
 const formSchema = z.object({
-  title: z.string().min(3).max(20),
-  description: z.string().min(3).max(500).trim(),
+  title: z.string().min(3,'title must contain at least 3 character(s)').max(20).regex(/^[a-zA-Z0-9-]+$/, "title can only contain letters, numbers, and hyphens without spaces & under scores"),
+  description: z.string().min(3,'description must contain at least 3 character(s)').max(500).trim(),
   image: z.string(),
 });
 
