@@ -19,7 +19,7 @@ const Customers = async ({ searchParams }: { searchParams: { key: string; page: 
       <p className='text-heading2-bold'>Customers ({totalCustomers}) {query&&<span>Results for &quot;{query}&quot;</span>}</p>
       <Separator className='bg-grey-1 my-5' />
       <ProductSearch item='customers'/>
-      <ScalableDataTable columns={columns} data={customers} totalPage={totalPages} />
+      <ScalableDataTable currentPage={page} columns={columns} data={customers} totalPage={totalPages} />
     </div>
   );
 };

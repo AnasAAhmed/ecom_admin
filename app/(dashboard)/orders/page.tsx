@@ -20,7 +20,7 @@ const Orders = async ({ searchParams }: { searchParams: { key: string; page: str
       <ScalableDataTable
         columns={columns}
         data={orders}
-        currentPage={Number(searchParams.page) || 1}
+        currentPage={page}
         totalPage={totalPages}
       />
     </div>
