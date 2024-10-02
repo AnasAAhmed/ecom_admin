@@ -51,7 +51,7 @@ const Delete: React.FC<DeleteProps> = ({ item, id }) => {
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
-        <Button className="hover:bg-red-1 hover:text-white bg-gray-200" onClick={() => setOpen(true)}>
+        <Button size={'sm'} className="hover:bg-red-1 hover:text-white bg-gray-200" onClick={() => setOpen(true)}>
           {/* <Trash className="h-4 w-4" /> */}
           Delete
         </Button>

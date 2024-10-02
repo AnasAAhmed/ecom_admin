@@ -81,25 +81,18 @@ export const GET = async (req: NextRequest) => {
     await connectToDB();
 
     const { searchParams } = new URL(req.url);
-    const page = parseInt(searchParams.get('page') ?? '0', 10);
+    const page = Number(searchParams.get('page'))||  0;
     const search = searchParams.get('search') ?? '';
-    const id = searchParams.get('id') ?? '';
+    const key = searchParams.get('key') ?? '';
 
     const totalProducts = await Product.countDocuments({});
-    let query: { $or?: { [key: string]: any }[] } = {};
+    let query: { [key: string]: any } = {};
 
     if (search) {
-      query.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { category: { $regex: search, $options: 'i' } },
-      ];
+      if (key === 'title') query = { title: { $regex: search, $options: 'i' } };
+      if (key === '_id' || isValidObjectId(search)) query = { _id: search };
+      if (key === 'category') query = { category: { $regex: search, $options: 'i' } };
     }
-
-    if (isValidObjectId(id)) {
-      query.$or = query.$or || [];
-      query.$or.push({ _id: id });
-    }
-
     const products = await Product.find(query)
       .sort({ createdAt: 'desc' })
       .skip(page * 10)
@@ -117,7 +110,6 @@ export const GET = async (req: NextRequest) => {
     return new NextResponse("Internal server Error", { status: 500 });
   }
 };
-
 
 export const dynamic = "force-dynamic";
 

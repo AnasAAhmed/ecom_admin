@@ -1,98 +1,46 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { useEffect, useState, useCallback } from "react";
-import { Plus, RefreshCw } from "lucide-react";
-
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { columns } from "@/components/products/ProductColumns";
-import { Input } from "@/components/ui/input";
-import { DataTablePRoducts } from "@/components/custom ui/DataTableProducts";
+import ProductSearch from "@/components/custom ui/ProductSearch";
+import Link from "next/link";
+import { ScalableDataTable } from "@/components/custom ui/ScalableDataTable";
 
-const Products = () => {
-  const router = useRouter();
-  const pageSize = 10;
+const Products = async ({ searchParams }: { searchParams: { key: string, query: string, page: string } }) => {
+  const key = searchParams.key || ''
+  const query = searchParams.query || ''
+  const page = Number(searchParams.page) || 0
 
-  const [loading, setLoading] = useState(true);
-  const [products, setProducts] = useState<ProductType[]>([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [totalProducts, setTotalProducts] = useState(0);
-  const [pageIndex, setPageIndex] = useState(0);
-  const [searchParams, setSearchParams] = useState({ id: "", title: "" });
+  const res = await fetch(`http://localhost:3000/api/products?page=${0}&key=${key}&search=${query}`, {
+    method: "GET",
+  });
+  const data = await res.json();
+  const products = data.data;
+  const totalPages = data.totalPages;
+  const totalProducts = data.totalProducts;
 
-  const getProducts = useCallback(async (page = 0, id = "", title = "") => {
-    try {
-      setLoading(true);
-      const res = await fetch(`/api/products?page=${page}&id=${id}&search=${title}`, {
-        method: "GET",
-      });
-      const data = await res.json();
-      setProducts(data.data);
-      setTotalPages(data.totalPages);
-      setTotalProducts(data.totalProducts);
-      setLoading(false);
-    } catch (err) {
-      console.error("[products_GET]", err);
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    getProducts(pageIndex, searchParams.id, searchParams.title);
-  }, [pageIndex, searchParams, getProducts]);
-
-  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>, key: keyof typeof searchParams) => {
-   
-    if (e.key === 'Enter') {
-      setSearchParams(prev => ({ ...prev, [key]: (e.target as HTMLInputElement).value }));
-    }
-  };
-
-  const handleRefresh = () => {
-    setSearchParams({ id: "", title: "" });
-    setPageIndex(0);
-    getProducts(0);
-  };
 
   return (
     <div className="px-10 py-5">
       <div className="flex flex-col sm:flex-row items-center justify-between">
-        <p className="text-heading2-bold">Products ({totalProducts})</p>
-        <Button className="bg-blue-1 text-white" onClick={() => router.push("/products/new")}>
-          <Plus className="h-4 w-4 mr-2" />
-          Create Product
-        </Button>
+        <p className="text-heading2-bold">Products ({totalProducts}) {query && <span>Results for "{query}"</span>}</p>
+        <Link href={"/products/new"}>
+          <Button className="bg-blue-1 text-white" >
+            <Plus className="h-4 w-4 mr-2" />
+            Create Product
+          </Button>
+        </Link>
       </div>
 
       <Separator className="bg-grey-1 my-4" />
 
-      <div className="flex items-center flex-col sm:flex-row gap-3">
-        <Input
-          placeholder="Search by title..."
-          onKeyDown={(e) => handleSearch(e, "title")}
-          className="max-w-sm"
-        />
-        <Input
-          placeholder="Search by ID..."
-          onKeyDown={(e) => handleSearch(e, "id")}
-          className="max-w-sm"
-          minLength={24}
-        />
-        <Button onClick={handleRefresh}>
-          <RefreshCw />
-        </Button>
-      </div>
+      <ProductSearch item="products" />
 
-      <DataTablePRoducts
+      <ScalableDataTable
         columns={columns}
         data={products}
-        searchKey="title"
-        pageIndex={pageIndex}
-        setPageIndex={setPageIndex}
-        pageSize={pageSize}
-        totalPages={totalPages}
-        loading={loading}
+        currentPage={page}
+        totalPage={totalPages}
       />
     </div>
   );

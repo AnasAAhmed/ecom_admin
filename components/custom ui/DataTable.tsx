@@ -20,34 +20,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "../ui/input";
-// import DropSearch from "./DropSearch";
-import { ChevronRight, RefreshCw } from "lucide-react";
-import Loader from "./Loader";
 import React, { useState } from 'react'
+import { Input } from "../ui/input";
 import DropDown from "./DropDown";
 
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  searchKeys: string[];
-  setRefresh?: any;
-  refresh?: boolean;
-  loading?: boolean;
+  searchKeys: string[]
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  searchKeys,
-  setRefresh,
-  refresh,
-  loading,
+  searchKeys
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [searchValue, setSearchValue] = useState(searchKeys[0]);
-
+ 
   const table = useReactTable({
     data,
     columns,
@@ -59,7 +50,7 @@ export function DataTable<TData, TValue>({
       columnFilters,
     },
   });
-
+  
   return (
     <div className="py-5">
       <div className="flex items-center py-4 gap-2">
@@ -70,11 +61,10 @@ export function DataTable<TData, TValue>({
             table.getColumn(searchValue)?.setFilterValue(event.target.value)
           }
           className="max-w-sm" />
-        <DropDown setSearchValue={setSearchValue} values={searchKeys} />
-        {refresh !== undefined && <Button onClick={() => setRefresh(!refresh)}><RefreshCw /></Button>}
+        <DropDown currentValue={searchKeys[0]} setSearchValue={setSearchValue} values={searchKeys} />
       </div>
 
-      {loading ? <div className="rounded-md border flex justify-center items-center h-[25rem]"><Loader /></div> : <div className="rounded-md border">
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -123,7 +113,7 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>}
+      </div>
 
       <div className="flex items-center justify-end space-x-2 py-1">
         <Button
@@ -143,7 +133,9 @@ export function DataTable<TData, TValue>({
           Next
         </Button>
       </div>
-    </div >
+
+
+    </div>
   );
 }
 

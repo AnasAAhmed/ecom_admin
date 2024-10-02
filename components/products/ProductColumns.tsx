@@ -13,7 +13,7 @@ export const columns: ColumnDef<ProductType>[] = [
       <div className="flex justify-between relative items-center">
         <Link
           href={`/products/${row.original._id}`}
-          className="relative hover:bg-gray-300 rounded-md px-1 tooltip"
+          className="relative hover:bg-gray-50 line-clamp-2 max-w-64 rounded-md tooltip"
           data-tooltip={"Edit"}
         >
           {row.original.title}
@@ -38,9 +38,6 @@ export const columns: ColumnDef<ProductType>[] = [
     header: "Price ($)",
   },
   {
-    accessorKey: "expense",
-    header: "Expense ($)",
-  }, {
     accessorKey: "stock",
     header: "Stock",
   },

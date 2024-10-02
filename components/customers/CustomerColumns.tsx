@@ -1,6 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
 import { Clipboard } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -51,6 +52,9 @@ export const columns: ColumnDef<CustomerType>[] = [
   },
   {
     accessorKey: "createdAt",
-    header: "createdAt",
+    header: "Created At",
+    cell: ({ row }) => {
+      return <>{format(row.original.createdAt, "MMM do, yyyy")}</>;
+    },
   },
 ];

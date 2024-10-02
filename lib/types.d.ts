@@ -36,7 +36,7 @@ type ProductType = {
 type OrderColumnType = {
   _id: string;
   customer: string;
-  products: number;
+  products: string[];
   totalAmount: number;
   createdAt: string;
   status: string;
@@ -56,4 +56,5 @@ type CustomerType = {
   clerkId: string;
   name: string;
   email: string;
+  createdAt: string;
 }

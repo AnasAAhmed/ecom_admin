@@ -1,6 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
 import { Clipboard } from "lucide-react";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -28,7 +29,7 @@ export const columns: ColumnDef<OrderColumnType>[] = [
     },
   },
   {
-    accessorKey: "customer",
+    accessorKey: "customerEmail",
     header: "Customer",
   },
   {
@@ -38,16 +39,28 @@ export const columns: ColumnDef<OrderColumnType>[] = [
   {
     accessorKey: "products",
     header: "Products",
+    cell: ({ row }) => {
+      return <>{row.original.products.length}</>;
+    },
   },
   {
     accessorKey: "totalAmount",
     header: "Total ($)",
     cell: ({ row }) => {
-        return <>${row.original.totalAmount} x <span className="relative tooltip"data-tooltip={(row.original.exchangeRate*row.original.totalAmount).toFixed()}>({row.original.currency})</span></>;
-      },
+      return <>
+        ${row.original.totalAmount} x
+        <span className="relative tooltip"
+          data-tooltip={`${(row.original.exchangeRate * row.original.totalAmount).toFixed()} ${row.original.currency}`}>
+        ({row.original.currency})
+      </span >
+        </>;
+    },
   },
-  {
-    accessorKey: "createdAt",
+{
+  accessorKey: "createdAt",
     header: "Created At",
+      cell: ({ row }) => {
+        return <>{format(row.original.createdAt, "MMM do, yyyy")}</>;
+      },
   },
 ];

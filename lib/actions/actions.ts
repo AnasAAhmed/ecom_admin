@@ -1,3 +1,4 @@
+import { isValidObjectId } from "mongoose";
 import Collection from "../models/Collection";
 import Customer from "../models/Customer";
 import Order from "../models/Order";
@@ -80,29 +81,68 @@ export const getSalesPerMonth = async () => {
   return graphData
 }
 
-export const getOrders = async () => {
+export const getOrders = async (key: string, query: string, page: number) => {
   try {
     await connectToDB()
+    const totalOrders = await Order.countDocuments({});
 
-    const orders = await Order.find().sort({ createdAt: "desc" });
+    let search: { [key: string]: any } = {};
 
-    const orderDetails = await Promise.all(orders.map(async (order) => {
-      const customer = await Customer.findOne({ clerkId: order.customerClerkId })
-      return {
-        _id: order._id,
-        customer: customer.name,
-        products: order.products.length,
-        status: order.status,
-        totalAmount: order.totalAmount,
-        currency: order.currency,
-        exchangeRate: order.exchangeRate,
-        createdAt: format(order.createdAt, "MMM do, yyyy")
-      }
-    }))
+    if (query) {
+      if (key === 'customerEmail') search = { customerEmail: { $regex: query, $options: 'i' } };
+      if (key === '_id' || isValidObjectId(query)) search = { _id: query };
+      if (key === 'status') search = { status: { $regex: query, $options: 'i' } };
+      if (key === 'createdAt') search = { createdAt: { $regex: query, $options: 'i' } };
+    }
+    const orders = await Order.find(search).sort({ createdAt: "desc" }).skip(page * 10).limit(10);
 
-    return JSON.parse(JSON.stringify(orderDetails));
+    if (!orders) return 'Order Not Found'
+
+    return JSON.parse(JSON.stringify({
+      data: orders,
+      totalOrders,
+      totalPages: Math.ceil(totalOrders / 10),
+    }));
   } catch (err) {
     console.log("[orders_GET]", err)
-    throw new Error("Internal Server Error");
+    return "Internal Server Error" + (err as Error).message;
+  }
+}
+
+interface CustomerTypeSSR {
+  _id: string;
+  clerkId: string;
+  name: string;
+  email: string;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export const getCustomers = async (key: string, query: string, page: number) => {
+  try {
+    await connectToDB();
+
+    const totalCustomers = await Customer.countDocuments({});
+
+    let search: { [key: string]: any } = {};
+
+    if (query) {
+      if (key === 'email') search = { email: { $regex: query, $options: 'i' } };
+      if (key === '_id' || isValidObjectId(query)) search = { _id: query };
+      if (key === 'clerkId') search = { clerkId: { $regex: query, $options: 'i' } };
+      if (key === 'name') search = { name: { $regex: query, $options: 'i' } };
+    }
+
+    const customers = await Customer.find(search).sort({ createdAt: 'desc' });
+    if (!customers) return 'Order Not Found';
+
+    return JSON.parse(JSON.stringify({
+      data: customers,
+      totalCustomers,
+      totalPages: Math.ceil(totalCustomers / 10),
+    }));
+  } catch (err) {
+    console.log("[orders_GET]", err)
+    return "Internal Server Error" + (err as Error).message;
   }
 }

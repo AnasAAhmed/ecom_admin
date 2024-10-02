@@ -1,12 +1,10 @@
-
-import { Plus } from "lucide-react";
 import { columns } from "@/components/collections/CollectionColumns";
-import { DataTable } from "@/components/custom ui/DataTable";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import Collection from "@/lib/models/Collection";
 import { connectToDB } from "@/lib/mongoDB";
+import { DataTable } from "@/components/custom ui/DataTable";
 
 const Collections = async () => {
   let data;

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
-  customerClerkId: String,
+  customerEmail: String,
   products: [
     {
       product: {
@@ -25,6 +25,7 @@ const orderSchema = new mongoose.Schema({
   totalAmount: Number,
   currency: String,
   status: String,
+  method: String,
   exchangeRate: Number,
   createdAt: {
     type: Date,

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -10,6 +11,7 @@ import {
   useReactTable,
   getPaginationRowModel,
 } from "@tanstack/react-table";
+
 import {
   Table,
   TableBody,
@@ -18,30 +20,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
-import Loader from "./Loader";
+import React, { useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from "next/navigation";
 
-interface DataTableProductsProps<TData, TValue> {
+
+interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  searchKey: string;
-  pageIndex: number;
-  pageSize: number;
-  setPageIndex: any;
-  totalPages: number;
-  loading:boolean;
+  currentPage: number;
+  totalPage: number;
 }
 
-export function DataTablePRoducts<TData, TValue>({
+export function ScalableDataTable<TData, TValue>({
   columns,
   data,
-  pageIndex,
-  pageSize,
-  setPageIndex,
-  totalPages,
-  loading
-}: DataTableProductsProps<TData, TValue>) {
+  currentPage,
+  totalPage,
+}: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const searchParams = useSearchParams(); // Read search params
+  const router = useRouter();
 
   const table = useReactTable({
     data,
@@ -52,16 +50,30 @@ export function DataTablePRoducts<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       columnFilters,
-      pagination: { pageIndex,pageSize},
     },
-    manualPagination: true,
-    pageCount: totalPages,
   });
 
+  const setPageParam = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('page', page.toString());
+    router.push(`?${params.toString()}`);
+  }
+  const nextPage = () => {
+    if (totalPage && currentPage > 1) {
+      const page = currentPage + 1;
+      setPageParam(page);
+    }
+  };
+
+  const prevPage = () => {
+    if (totalPage && currentPage > 1) {
+      const page = currentPage - 1;
+      setPageParam(page);
+    }
+  };
   return (
     <div className="py-5">
-        {loading ? <div className="rounded-md border flex justify-center items-center h-[28rem]"><Loader /></div> :
-        <div className="rounded-md border">
+      <div className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -110,23 +122,21 @@ export function DataTablePRoducts<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>}
-
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <span className="mx-3">page-({pageIndex + 1}/{totalPages})</span>
+      </div>
+      <div className="flex items-center justify-end space-x-2 py-1">
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setPageIndex((old: number) => Math.max(old - 1, 0))}
-          disabled={pageIndex === 0}
+          onClick={() => prevPage()}
+        disabled={currentPage < 2}
         >
           Previous
         </Button>
         <Button
           variant="outline"
           size="sm"
-          onClick={() => setPageIndex((old: number) => old + 1)}
-          disabled={pageIndex >= totalPages - 1}
+          onClick={() => nextPage()}
+        disabled={totalPage < 2}
         >
           Next
         </Button>
@@ -134,3 +144,5 @@ export function DataTablePRoducts<TData, TValue>({
     </div>
   );
 }
+
+
