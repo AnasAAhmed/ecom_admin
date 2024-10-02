@@ -23,7 +23,7 @@ const Products = async ({ searchParams }: { searchParams: { key: string, query: 
   return (
     <div className="px-10 py-5">
       <div className="flex flex-col sm:flex-row items-center justify-between">
-        <p className="text-heading2-bold">Products ({totalProducts}) {query && <span>Results for "{query}"</span>}</p>
+        <p className="text-heading2-bold">Products ({totalProducts}) {query && <span>Results for &quot;{query}&quot;</span>}</p>
         <Link href={"/products/new"}>
           <Button className="bg-blue-1 text-white" >
             <Plus className="h-4 w-4 mr-2" />
