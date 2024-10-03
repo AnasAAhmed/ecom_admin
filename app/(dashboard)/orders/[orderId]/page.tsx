@@ -6,6 +6,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import Loader from "@/components/custom ui/Loader";
 import { DataTable } from "@/components/custom ui/DataTable";
+import { Metadata } from "next";
 type Lol = { street: string; city: string; state: string; postalCode: string; country: string; }
 type Order = {
   _id: string
@@ -19,6 +20,11 @@ type Order = {
   exchangeRate: number,
 
 }
+
+export const metadata: Metadata = {
+  title: "Borcelle - Order Details",
+  description: "Manage single order in Borcelle's admin panel",
+};
 
 const OrderDetails = ({ params }: { params: { orderId: string } }) => {
   const [orderDetails, setOrderDetails] = useState<Order>();

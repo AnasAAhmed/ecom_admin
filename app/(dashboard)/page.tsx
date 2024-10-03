@@ -3,20 +3,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
   getSalesPerMonth,
-  getTotalCustomers,
-  getTotalSales,
-  getTotalProducts
+  getAdminData,
 } from "@/lib/actions/actions";
 import { CircleDollarSign, LucideEdit, ShoppingBag, UserRound } from "lucide-react";
 
 
 export default async function Home() {
-  
- 
-  const totalRevenue = await getTotalSales().then((data) => data.totalRevenue);
-  const totalOrders = await getTotalSales().then((data) => data.totalOrders);
-  const totalCustomers = await getTotalCustomers();
-  const totalProducts = await getTotalProducts();
+
+  const data = await getAdminData();
+  const totalRevenue = data.totalRevenue;
+  const totalOrders = data.totalOrders;
+  const totalCustomers = data.totalCustomers;
+  const totalProducts = data.totalProducts;
 
   const graphData = await getSalesPerMonth();
 

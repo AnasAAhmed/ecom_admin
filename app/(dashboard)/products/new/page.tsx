@@ -1,5 +1,11 @@
 import ProductForm from "@/components/products/ProductForm"
 import { getCollections } from "@/lib/actions/actions"
+import { Metadata } from "next";
+
+export const metadata: Metadata= {
+  title: "Borcelle - Create Products",
+  description: "Create Products to add in Borcelle's store",
+};
 
 const CreateProduct = async() => {
   const collection =await getCollections();

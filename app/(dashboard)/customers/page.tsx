@@ -3,7 +3,12 @@ import ProductSearch from '@/components/custom ui/ProductSearch';
 import { columns } from '@/components/customers/CustomerColumns';
 import { Separator } from '@/components/ui/separator';
 import { getCustomers } from '@/lib/actions/actions';
+import { Metadata } from 'next';
 
+export const metadata: Metadata = {
+  title: "Borcelle - Customers",
+  description: "Page where admin can manage customers in Borcelle's admin panel",
+};
 
 const Customers = async ({ searchParams }: { searchParams: { key: string; page: string, query: string } }) => {
   const key = searchParams.key || ''

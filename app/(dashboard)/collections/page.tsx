@@ -5,6 +5,12 @@ import Link from "next/link";
 import Collection from "@/lib/models/Collection";
 import { connectToDB } from "@/lib/mongoDB";
 import { DataTable } from "@/components/custom ui/DataTable";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Borcelle - Collections",
+  description: "Page where admin can manage collections in Borcelle's admin panel",
+};
 
 const Collections = async () => {
   let data;

@@ -3,6 +3,12 @@ import ProductSearch from "@/components/custom ui/ProductSearch";
 import { columns } from "@/components/orders/OrderColumns";
 import { Separator } from "@/components/ui/separator";
 import { getOrders } from "@/lib/actions/actions";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Borcelle - Orders",
+  description: "All Orders & Transactions to manage Borcelle's Orders data",
+};
 
 const Orders = async ({ searchParams }: { searchParams: { key: string; page: string, query: string } }) => {
   const key = searchParams.key || ''

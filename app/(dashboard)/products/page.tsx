@@ -5,16 +5,22 @@ import { columns } from "@/components/products/ProductColumns";
 import ProductSearch from "@/components/custom ui/ProductSearch";
 import Link from "next/link";
 import { ScalableDataTable } from "@/components/custom ui/ScalableDataTable";
+import { getProducts } from "@/lib/actions/actions";
+import NotFound from "@/components/custom ui/NotFound";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Borcelle - Products",
+  description: "All Products to manage Borcelle's products data",
+};
 
 const Products = async ({ searchParams }: { searchParams: { key: string, query: string, page: string } }) => {
   const key = searchParams.key || ''
   const query = searchParams.query || ''
   const page = Number(searchParams.page) || 0
 
-  const res = await fetch(`http://localhost:3000/api/products?page=${0}&key=${key}&search=${query}`, {
-    method: "GET",
-  });
-  const data = await res.json();
+  const data = await getProducts(key, query, page);
+  if (typeof data === 'string') return <NotFound errorMessage={data}/>;
   const products = data.data;
   const totalPages = data.totalPages;
   const totalProducts = data.totalProducts;
