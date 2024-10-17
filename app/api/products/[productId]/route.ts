@@ -2,7 +2,7 @@ import Collection from "@/lib/models/Collection";
 import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
 import { slugify } from "@/lib/utils";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -87,6 +87,10 @@ export const POST = async (
 
     await updatedProduct.save();
 
+    await fetch(`https://ecom-store-anas.vercel.app/api/revalidate?path=/&secret=pandu-boom`, {
+      method: "POST",
+    });
+
     return NextResponse.json(updatedProduct, { status: 200 });
   } catch (err) {
     console.log("[productId_POST]", err);
@@ -125,6 +129,10 @@ export const DELETE = async (
         })
       )
     );
+
+    await fetch(`https://ecom-store-anas.vercel.app/api/revalidate?path=/&secret=pandu-boom`, {
+      method: "POST",
+    });
 
     return new NextResponse(JSON.stringify({ message: "Product deleted" }), {
       status: 200,

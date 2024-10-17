@@ -1,8 +1,9 @@
 import { connectToDB } from "@/lib/mongoDB";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 import Collection from "@/lib/models/Collection";
+import { revalidatePath } from "next/cache";
 
 export const POST = async (req: NextRequest) => {
   try {
@@ -30,7 +31,7 @@ export const POST = async (req: NextRequest) => {
     })
 
     await newCollection.save()
-
+    revalidatePath('/products/new');
     return NextResponse.json(newCollection, { status: 200 })
   } catch (err) {
     console.log("[collections_POST]", err)

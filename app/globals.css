@@ -7,6 +7,15 @@ body,
 :root {
   height: 100%;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
 .tooltip:before {
   content: attr(data-tooltip);
   position: absolute;

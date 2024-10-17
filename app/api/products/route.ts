@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 import { connectToDB } from "@/lib/mongoDB";
@@ -69,45 +69,13 @@ export const POST = async (req: NextRequest) => {
         }
       }
     }
-
+    await fetch(`https://ecom-store-anas.vercel.app/api/revalidate?path=/&secret=pandu-boom`, {
+      method: "POST",
+    });
     return NextResponse.json(newProduct, { status: 200 });
   } catch (err) {
     console.log("[products_POST] Error:", err);
     return new NextResponse("Internal Error", { status: 500 });
-  }
-};
-export const GET = async (req: NextRequest) => {
-  try {
-    await connectToDB();
-
-    const { searchParams } = new URL(req.url);
-    const page = Number(searchParams.get('page'))||  0;
-    const search = searchParams.get('search') ?? '';
-    const key = searchParams.get('key') ?? '';
-
-    const totalProducts = await Product.countDocuments({});
-    let query: { [key: string]: any } = {};
-
-    if (search) {
-      if (key === 'title') query = { title: { $regex: search, $options: 'i' } };
-      if (key === '_id' || isValidObjectId(search)) query = { _id: search };
-      if (key === 'category') query = { category: { $regex: search, $options: 'i' } };
-    }
-    const products = await Product.find(query)
-      .sort({ createdAt: 'desc' })
-      .skip(page * 10)
-      .limit(10)
-      .populate({ path: 'collections', model: Collection })
-      .select("-reviews -media -ratings -numOfReviews -description -variants");
-
-    return NextResponse.json({
-      data: products,
-      totalProducts,
-      totalPages: Math.ceil(totalProducts / 10),
-    }, { status: 200 });
-  } catch (err) {
-    console.log("[products_GET]", err);
-    return new NextResponse("Internal server Error", { status: 500 });
   }
 };
 

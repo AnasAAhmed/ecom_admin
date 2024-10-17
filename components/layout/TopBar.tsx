@@ -30,7 +30,7 @@ const TopBar = () => {
         ))}
       </div>
 
-      <div className="relative flex gap-4 items-center">
+      <div onBlur={() => setTimeout(() => setDropdownMenu(!dropdownMenu), 100)} className="relative flex gap-4 items-center">
         <Menu
           className="cursor-pointer md:hidden"
           onClick={() => setDropdownMenu(!dropdownMenu)}

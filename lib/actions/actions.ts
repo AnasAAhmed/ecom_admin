@@ -8,7 +8,7 @@ import { connectToDB } from "../mongoDB"
 
 export const getAdminData = async () => {
   await connectToDB();
-  const orders = await Order.find();
+  const orders = await Order.find().select('totalAmount');
   const totalProducts = await Product.countDocuments({});
   const totalCustomers = await Customer.countDocuments({});
   const totalOrders = orders.length
@@ -18,7 +18,7 @@ export const getAdminData = async () => {
 
 export const getSalesPerMonth = async () => {
   await connectToDB()
-  const orders = await Order.find()
+  const orders = await Order.find().select('totalAmount createdAt')
 
   const salesPerMonth = orders.reduce((acc, order) => {
     const monthIndex = new Date(order.createdAt).getMonth(); // 0 for Janruary --> 11 for December

@@ -35,6 +35,10 @@ export const columns: ColumnDef<OrderColumnType>[] = [
   {
     accessorKey: "status",
     header: "Status",
+    cell: ({ row }) => {
+      return <span style={{color:row.original.status.startsWith('Canceled')?'red':''}}
+      >{row.original.status}</span>;
+    },
   },
   {
     accessorKey: "products",
@@ -51,16 +55,16 @@ export const columns: ColumnDef<OrderColumnType>[] = [
         ${row.original.totalAmount} x
         <span className="relative tooltip"
           data-tooltip={`${(row.original.exchangeRate * row.original.totalAmount).toFixed()} ${row.original.currency}`}>
-        ({row.original.currency})
-      </span >
-        </>;
+          ({row.original.currency})
+        </span >
+      </>;
     },
   },
-{
-  accessorKey: "createdAt",
+  {
+    accessorKey: "createdAt",
     header: "Created At",
-      cell: ({ row }) => {
-        return <>{format(row.original.createdAt, "MMM do, yyyy")}</>;
-      },
+    cell: ({ row }) => {
+      return <>{format(row.original.createdAt, "MMM do, yyyy")}</>;
+    },
   },
 ];

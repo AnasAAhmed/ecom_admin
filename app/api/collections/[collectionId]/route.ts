@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 
 import { connectToDB } from "@/lib/mongoDB";
 import Collection from "@/lib/models/Collection";
 import Product from "@/lib/models/Product";
+import { revalidatePath } from "next/cache";
 
 export const GET = async (
   req: NextRequest,
@@ -60,7 +61,7 @@ export const POST = async (
     );
 
     await collection.save();
-
+    revalidatePath('/products/new');
     return NextResponse.json(collection, { status: 200 });
   } catch (err) {
     console.log("[collectionId_POST]", err);
@@ -86,7 +87,7 @@ export const DELETE = async (
       { collections: params.collectionId },
       { $pull: { collections: params.collectionId } }
     );
-    
+    revalidatePath('/products/new');
     return new NextResponse("Collection is deleted", { status: 200 });
   } catch (err) {
     console.log("[collectionId_DELETE]", err);

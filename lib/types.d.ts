@@ -56,5 +56,6 @@ type CustomerType = {
   clerkId: string;
   name: string;
   email: string;
+  orders: string[]
   createdAt: string;
 }

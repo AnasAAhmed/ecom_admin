@@ -1,5 +1,6 @@
 import {
   LayoutDashboard,
+  Plus,
   Shapes,
   ShoppingBag,
   Tag,
@@ -31,5 +32,15 @@ export const navLinks = [
     url: "/customers",
     icon: <UsersRound />,
     label: "Customers",
+  },
+  {
+    url: "/products/new",
+    icon: <Plus size={'1rem'} />,
+    label: "Create Product",
+  },
+  {
+    url: "/collections/new",
+    icon: <Plus size={'1rem'} />,
+    label: "Create Collection",
   },
 ];

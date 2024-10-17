@@ -33,6 +33,13 @@ export const columns: ColumnDef<CustomerType>[] = [
     header: "Email",
   },
   {
+    accessorKey: "orders",
+    header: "Orders",
+    cell: ({ row }) => {
+      return <>{row.original.orders.length}</>
+    },
+  },
+  {
     accessorKey: "_id",
     header: "_id",
     cell: ({ row }) => {

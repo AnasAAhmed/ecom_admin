@@ -7,6 +7,9 @@ const customerSchema = new mongoose.Schema({
   orders: {
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order"}]
   },
+  wishlist: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product"}]
+  },
   createdAt: {
     type: Date,
     default: Date.now,

@@ -30,7 +30,10 @@ import { Label } from "../ui/label";
 
 
 const formSchema = z.object({
-  title: z.string().min(2).max(60),
+  title: z.string()
+    .min(2, "Title must be at least 2 characters long")
+    .max(60, "Title must be at most 60 characters long")
+    .regex(/^[a-zA-Z0-9\s]+$/, "Title must not contain any symbols"),
   description: z.string().min(2).max(400).trim(),
   media: z.array(z.string()).max(4),
   category: z.string().min(2),
