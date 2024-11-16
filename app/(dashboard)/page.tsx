@@ -5,7 +5,7 @@ import {
   getSalesPerMonth,
   getAdminData,
 } from "@/lib/actions/actions";
-import { CircleDollarSign, LucideEdit, ShoppingBag, UserRound } from "lucide-react";
+import { CircleDollarSign, LucideEdit, ShoppingBag, UserCheck, UserRound } from "lucide-react";
 
 
 export default async function Home() {
@@ -15,6 +15,7 @@ export default async function Home() {
   const totalOrders = data.totalOrders;
   const totalCustomers = data.totalCustomers;
   const totalProducts = data.totalProducts;
+  const totalUsers = data.totalUsers;
 
   const graphData = await getSalesPerMonth();
 
@@ -56,10 +57,19 @@ export default async function Home() {
         <Card>
           <CardHeader className="flex flex-row justify-between items-center">
             <CardTitle>Total Customer</CardTitle>
-            <UserRound className="max-sm:hidden" />
+            <UserCheck className="max-sm:hidden" />
           </CardHeader>
           <CardContent>
             <p className="text-body-bold">{totalCustomers}</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row justify-between items-center">
+            <CardTitle>Total Users</CardTitle>
+            <UserRound className="max-sm:hidden" />
+          </CardHeader>
+          <CardContent>
+            <p className="text-body-bold">{totalUsers}</p>
           </CardContent>
         </Card>
       </div>

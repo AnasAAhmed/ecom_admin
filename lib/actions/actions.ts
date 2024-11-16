@@ -10,10 +10,11 @@ export const getAdminData = async () => {
   await connectToDB();
   const orders = await Order.find().select('totalAmount');
   const totalProducts = await Product.countDocuments({});
-  const totalCustomers = await Customer.countDocuments({});
+  const totalUsers = await Customer.countDocuments({});
+  const totalCustomers = await Customer.countDocuments({ ordersCount: { $gt: 0 } });
   const totalOrders = orders.length
   const totalRevenue = orders.reduce((acc, order) => acc + order.totalAmount, 0)
-  return { totalOrders, totalRevenue, totalProducts, totalCustomers }
+  return { totalOrders, totalRevenue, totalProducts, totalCustomers,totalUsers }
 }
 
 export const getSalesPerMonth = async () => {

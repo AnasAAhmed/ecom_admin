@@ -5,10 +5,11 @@ const customerSchema = new mongoose.Schema({
   name: String,
   email: String,
   orders: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order"}]
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }]
   },
+  ordersCount: { type: Number ,default:0},
   wishlist: {
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product"}]
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }]
   },
   createdAt: {
     type: Date,
