@@ -33,14 +33,5 @@ export const navLinks = [
     icon: <UsersRound />,
     label: "Customers",
   },
-  {
-    url: "/products/new",
-    icon: <Plus size={'1rem'} />,
-    label: "Create Product",
-  },
-  {
-    url: "/collections/new",
-    icon: <Plus size={'1rem'} />,
-    label: "Create Collection",
-  },
+ 
 ];

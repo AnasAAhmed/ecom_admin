@@ -53,7 +53,8 @@ type OrderItemType = {
 
 type CustomerType = {
   _id: string;
-  clerkId: string;
+  googleId?: string;
+  image: string;
   ordersCount:number;
   name: string;
   email: string;

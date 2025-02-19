@@ -7,24 +7,6 @@ import toast from "react-hot-toast";
 
 export const columns: ColumnDef<CustomerType>[] = [
   {
-    accessorKey: "clerkId",
-    header: "Clerk Id",
-    cell: ({ row }) => {
-      return (
-        <div className="flex items-center">
-          <div className=" relative tool"
-            data-tooltip={row.original.clerkId}
-          >
-            {row.original.clerkId.slice(0, 7)}...
-          </div>
-          <span onClick={() => { navigator.clipboard.writeText(row.original.clerkId); toast.success('text copied') }}>
-            <Clipboard className="cursor-pointer h-3 w-3 " />
-          </span>
-        </div>
-      );
-    },
-  },
-  {
     accessorKey: "name",
     header: "Name",
   },
@@ -33,10 +15,21 @@ export const columns: ColumnDef<CustomerType>[] = [
     header: "Email",
   },
   {
+    accessorKey: "googleId",
+    header: "Google-Id",
+  },
+  {
     accessorKey: "ordersCount",
     header: "Orders",
     cell: ({ row }) => {
       return <>{row.original.ordersCount}</>
+    },
+  },
+  {
+    accessorKey: "image",
+    header: "Avtar",
+    cell: ({ row }) => {
+      return <><img src={row.original.image!} alt="avatar" className="w-8 h-8 rounded-full" /></>
     },
   },
   {

@@ -112,7 +112,6 @@ export const getCustomers = async (key: string, query: string, page: number) => 
     if (query) {
       if (key === 'email') search = { email: { $regex: query, $options: 'i' } };
       if (key === '_id' || isValidObjectId(query)) search = { _id: query };
-      if (key === 'clerkId') search = { clerkId: { $regex: query, $options: 'i' } };
       if (key === 'name') search = { name: { $regex: query, $options: 'i' } };
     }
 

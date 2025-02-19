@@ -18,7 +18,7 @@ const ProductSearch = ({ item }: { item: string }) => {
     const fields = {
         'products': ['title', 'category', '_id'],
         'orders': ['customerEmail', 'status', '_id', 'createdAt'],
-        'customers': ['email', 'clerkId', '_id', 'name'],
+        'customers': ['email', '_id', 'name'],
     }
     const values: string[] = fields[itemName]
     const [key, setKey] = useState(values[0]);

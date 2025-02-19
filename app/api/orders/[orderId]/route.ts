@@ -1,4 +1,4 @@
-import Customer from "@/lib/models/Customer";
+
 import Order from "@/lib/models/Order";
 import Product from "@/lib/models/Product";
 import { connectToDB } from "@/lib/mongoDB";
